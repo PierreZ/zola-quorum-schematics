@@ -56,23 +56,19 @@ include_content = true
 # ==========================================================================
 [extra]
 
-# --- Title block (the cartouche at the very top) ---
-project   = "pierrezemb.fr — personal blog"
-sheet     = "01 / 01"
-scale     = "1:1"
-drawn_by  = "P. ZEMB"
-
-# --- Console strip (the build-log prompt line) ---
-prompt_user   = "pierre@clever-cloud"
+# --- Console strip (the terminal client: prompt + distributed read log) ---
+prompt_user   = "pierrez@clever-cloud"
 prompt_path   = "~/blog"
 build_command = "./build --deterministic"
+# The replica a healthy post read is "served from", echoed in the console.
+read_replica  = "node-0"
 
-# --- Cluster schematic (3 nodes drawn in the title block) ---
+# --- Cluster schematic (3 nodes drawn in the console = the replica set) ---
 cluster_enabled = true
 
-# --- Fault-injection / chaos toggle (opt-in; nothing moves without a click) ---
+# --- Fault injection: disk failure (opt-in; nothing moves without a click) ---
 chaos_enabled = true
-chaos_hint    = "simulate a network split, Jepsen-style"
+# chaos_hint  = "…"   # optional text on the right of the fault bar (default: none)
 
 # --- Hero specs (home page) ---
 specs = [

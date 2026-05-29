@@ -91,32 +91,27 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 /* ---- SHEET ---- */
 .sheet { border: 1.5px solid var(--ink); background: var(--paper); margin: 1.4rem auto; max-width: 832px; position: relative; z-index: 1; }
 
-/* ---- TITLE BLOCK ---- */
-.titleblock { display: grid; grid-template-columns: 1fr auto auto auto auto; border-bottom: 1.5px solid var(--ink); font-size: .74rem; }
-.titleblock .cell { padding: .55rem .9rem; border-left: 1px solid var(--grid-bold); }
-.titleblock .cell:first-child { border-left: none; }
-.titleblock .label { color: var(--ink-dim); text-transform: uppercase; letter-spacing: .1em; font-size: .62rem; display: block; }
-.titleblock .val { color: var(--ink); font-weight: 600; }
-.titleblock .drawn-by .val { color: var(--cyan); }
-
-/* ---- NAV with prompt feel ---- */
+/* ---- NAV = terminal command history ---- */
 .topnav { display: flex; align-items: center; gap: 1.2rem; padding: .7rem 1.2rem; border-bottom: 1px solid var(--grid-bold); font-size: .82rem; }
 .topnav .logo { font-weight: 700; color: var(--ink); letter-spacing: -.02em; }
 .topnav .logo::before { content: "◳ "; color: var(--cyan); }
 .topnav nav { display: flex; gap: 1rem; margin-left: auto; }
 .topnav nav a { color: var(--ink-dim); }
-.topnav nav a::before { content: "/"; color: var(--ink-faint); }
+.topnav nav a::before { content: "$ "; color: var(--ink-faint); }
 .topnav nav a:hover { color: var(--cyan); text-decoration: none; }
 .flip { background: none; border: 1px solid var(--grid-bold); color: var(--ink-dim); font-family: inherit; font-size: .74rem; cursor: pointer; padding: .2rem .5rem; }
 .flip:hover { border-color: var(--cyan); color: var(--cyan); }
 
-/* ---- CONSOLE STRIP (the terminal vibe) ---- */
-.console { padding: .8rem 1.2rem; border-bottom: 1px dashed var(--grid-bold); font-size: .8rem; color: var(--ink-dim); background: var(--paper-2); }
-.console .ln { white-space: pre-wrap; }
+/* ---- CONSOLE STRIP (the terminal client) ---- */
+.console { display: flex; align-items: center; gap: 1rem; padding: .8rem 1.2rem; border-bottom: 1px dashed var(--grid-bold); font-size: .8rem; color: var(--ink-dim); background: var(--paper-2); }
+.console .log { min-width: 0; flex: 1; }
+.console .ln { white-space: pre-wrap; overflow-wrap: anywhere; }
 .console .sig { color: var(--cyan); }
 .console .path { color: var(--ink); }
 .console .ok { color: var(--cyan); }
+.console .warn { color: var(--red); }
 .console .out { color: var(--ink-dim); }
+.console .cluster-cell { flex: none; display: flex; align-items: center; padding-left: .9rem; border-left: 1px solid var(--grid-bold); }
 
 /* ---- HERO ---- */
 .hero { padding: 2.2rem 1.6rem; border-bottom: 1px dashed var(--grid-bold); position: relative; }
@@ -177,11 +172,21 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---- PROSE (markdown body) ---- */
 .prose p { margin-bottom: 1.15rem; max-width: 70ch; }
-.prose h2, .prose h3, .prose h4 { letter-spacing: -.01em; position: relative; }
+.prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 { letter-spacing: -.01em; position: relative; }
+.prose h1 { font-size: 1.6rem; margin: 2.4rem 0 .9rem; font-weight: 800; }
 .prose h2 { font-size: 1.35rem; margin: 2.2rem 0 .8rem; }
 .prose h3 { font-size: 1.2rem; margin: 2rem 0 .7rem; }
 .prose h4 { font-size: 1.04rem; margin: 1.6rem 0 .6rem; }
+.prose h5 { font-size: .94rem; margin: 1.4rem 0 .5rem; }
+.prose h6 { font-size: .84rem; margin: 1.2rem 0 .4rem; color: var(--ink-dim); text-transform: uppercase; letter-spacing: .1em; }
 .prose h2 .n, .prose h3 .n { color: var(--cyan); margin-right: .4rem; }
+.prose sub, .prose sup { line-height: 0; }
+.prose abbr { text-decoration: underline dotted; cursor: help; }
+.prose kbd { font-size: .82em; border: 1px solid var(--grid-bold); border-bottom-width: 2px; border-radius: 3px; padding: .02em .35em; background: var(--paper-2); color: var(--ink); }
+.prose mark { background: var(--selection); color: var(--ink); padding: 0 .15em; }
+.prose .footnote-definition { display: flex; gap: .6rem; font-size: .82rem; color: var(--ink-dim); margin-top: .6rem; }
+.prose .footnote-definition p { margin-bottom: .3rem; }
+.prose sup.footnote-reference a { color: var(--cyan); }
 .prose ul, .prose ol { max-width: 70ch; margin: 0 0 1.15rem 1.4rem; }
 .prose li { margin-bottom: .35rem; }
 .prose img { max-width: 100%; height: auto; border: 1px solid var(--grid-bold); }
@@ -224,13 +229,12 @@ code.inline, .prose p > code, .prose li > code { background: var(--paper-2); bor
 .foot .links a { color: var(--ink); }
 .foot .links a:hover { color: var(--cyan); }
 
-/* ---- CLUSTER SCHEMATIC (in title block area) ---- */
-.cluster-cell { border-left: 1px solid var(--grid-bold); padding: .4rem .7rem; display: flex; align-items: center; }
+/* ---- CLUSTER SCHEMATIC (in the console = the replica set) ---- */
+/* The node currently being read from (chosen by render.js) is .active. */
 .cluster { display: block; }
 .cluster .node { stroke: var(--ink-dim); fill: var(--paper); stroke-width: 1.2; }
-.cluster .node.leader { stroke: var(--cyan); fill: var(--cyan); }
+.cluster .node.active { stroke: var(--cyan); fill: var(--cyan); }
 .cluster .link { stroke: var(--grid-bold); stroke-width: 1; }
-.cluster .link.active { stroke: var(--cyan); stroke-dasharray: 2 2; }
 
 /* ---- CONSISTENCY BADGE (article meta) ---- */
 .meta-row { display: flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--grid-bold); margin-bottom: 1.4rem; font-size: .72rem; }
@@ -243,16 +247,17 @@ code.inline, .prose p > code, .prose li > code { background: var(--paper-2); bor
 .vclock { color: var(--ink-faint); font-size: .68rem; margin-top: .25rem; }
 .vclock b { color: var(--cyan); font-weight: 600; }
 
-/* ---- CHAOS TOGGLE + BANNER ---- */
+/* ---- FAULT INJECTION (disk failure) ---- */
 .chaos-bar { display: flex; align-items: center; gap: .8rem; padding: .5rem 1.6rem; border-bottom: 1px dashed var(--grid-bold); font-size: .74rem; color: var(--ink-dim); }
 .chaos-btn { background: none; border: 1px solid var(--grid-bold); color: var(--ink-dim); font-family: inherit; font-size: .72rem; cursor: pointer; padding: .2rem .6rem; }
 .chaos-btn:hover { border-color: var(--red); color: var(--red); }
-.chaos-banner { display: none; background: var(--red); color: #fff; text-align: center; font-size: .76rem; padding: .35rem; letter-spacing: .06em; }
-body.chaos .chaos-banner { display: block; animation: flicker .4s steps(2) infinite; }
-body.chaos .cluster .node.n3 { stroke: var(--red); fill: var(--red); }
-body.chaos .cluster .link.l3 { stroke: var(--red); stroke-dasharray: 3 3; }
-@keyframes flicker { 50% { opacity: .75; } }
-@media (prefers-reduced-motion: reduce) { body.chaos .chaos-banner { animation: none; } }
+body.chaos .chaos-btn { border-color: var(--red); color: var(--red); }
+/* the replica you are reading from is the disk that fails */
+body.chaos .cluster .node.active { stroke: var(--red); fill: var(--red); }
+
+/* typoglycemia artifacts injected into the content by a failing disk:
+   still readable (first/last letter intact), but marked as corrupted */
+.rot { text-decoration: underline dotted var(--red); text-decoration-thickness: 1px; text-underline-offset: 3px; }
 
 /* ---- SEARCH (optional) ---- */
 .search-box { padding: .6rem 1.6rem; border-bottom: 1px dashed var(--grid-bold); }
@@ -270,9 +275,6 @@ body.chaos .cluster .link.l3 { stroke: var(--red); stroke-dasharray: 3 3; }
 .statusbar .spacer { flex: 1; }
 
 @media (max-width: 640px) {
-  .titleblock { grid-template-columns: 1fr 1fr; }
-  .titleblock .cell:nth-child(3), .titleblock .cell:nth-child(4) { border-top: 1px solid var(--grid-bold); }
-  .titleblock .cluster-cell { grid-column: 1 / -1; border-left: none; border-top: 1px solid var(--grid-bold); justify-content: center; }
   .topnav { flex-wrap: wrap; gap: .6rem; }
   .topnav nav { display: none; }
   .bom .row { grid-template-columns: 2rem 1fr; }

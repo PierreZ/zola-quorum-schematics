@@ -22,8 +22,9 @@ committing (the "dirty Git tree" line is from Nix, not Zola — ignore it).
   `title` / `description` / `content` / `extra_head` / `extra_body`. Computes
   `post_count` from `get_section(path="posts/_index.md")`.
 - `templates/macros.html` — `seed(slug)`, `lineno(n)`, `bom_row(page, n)`.
-- `templates/partials/` — titleblock, cluster (SVG), nav, console, chaos, search,
-  statusbar, footer.
+- `templates/partials/` — cluster (SVG, drawn inside the console), nav (terminal
+  command history), console (page-aware: build line vs. distributed `render` read on
+  posts), chaos (disk-failure bar), search, statusbar, footer. No title block.
 - `templates/{index,section,page,taxonomy_list,taxonomy_single}.html`.
 - `templates/shortcodes/{quote,note}.html`.
 - `static/{css,js,fonts}/`. JS is plain vanilla, no build step.
@@ -59,7 +60,8 @@ committing (the "dirty Git tree" line is from Nix, not Zola — ignore it).
 ## Conventions
 
 - 100% monospace, `1px` borders (no shadows), single cyan accent, red only for failure
-  states. One animated element at a time (cursor blink, chaos flicker) — both honor
+  states. Only the cursor blinks; the disk-failure corruption is rolled once per load
+  (static while reading) and honors
   `prefers-reduced-motion`.
 - Every new tunable goes through `config.extra.*` with a `| default(...)` in the
   template, and must be documented in `README.md` (the full `[extra]` table) and listed

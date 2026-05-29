@@ -20,16 +20,13 @@ repo = "https://github.com/PierreZ/pierrez-blueprint"
 # Copy the matching keys into your own site's [extra]. See README.md.
 # ---------------------------------------------------------------------------
 [extra]
-project = "pierrezemb.fr — personal blog"   # title-block: project name
-sheet = "01 / 01"                            # title-block: sheet number
-scale = "1:1"                                # title-block: scale
-drawn_by = "P. ZEMB"                         # title-block: author initials
-prompt_user = "pierre@clever-cloud"          # console: user@host before the $
+prompt_user = "pierrez@clever-cloud"         # console: user@host before the $
 prompt_path = "~/blog"                       # console: path after the colon
-build_command = "./build --deterministic"    # console: the command echoed
-cluster_enabled = true                       # show the 3-node cluster schematic
-chaos_enabled = true                         # show the fault-injection bar
-chaos_hint = "simulate a network split, Jepsen-style"
+build_command = "./build --deterministic"    # console: command echoed on index/section
+read_replica = "node-0"                      # console: replica a healthy post read serves from
+cluster_enabled = true                       # show the 3-node cluster schematic in the console
+chaos_enabled = true                         # show the disk-failure fault-injection bar
+# chaos_hint = "…"                           # optional hint on the right of the bar (default: none)
 dimline_start = "2019"                        # hero dimension line, left end
 dimline_end = "2026 · 6 yrs"                  # hero dimension line, right end
 default_consistency = "linearizable"          # fallback for page.extra.consistency

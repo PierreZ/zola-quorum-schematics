@@ -5,7 +5,7 @@
 {% block description %}Posts tagged #{{ term.name }}.{% endblock description %}
 
 {% block content %}
-<div class="sec-head">grep -l '#{{ term.name }}' ./posts <span class="ref">ref. /{{ taxonomy.name }}/{{ term.slug }}</span></div>
+<div class="sec-head">ls ./{{ taxonomy.name }}/{{ term.slug }} <span class="ref">ref. /{{ taxonomy.name }}/{{ term.slug }}</span></div>
 <div class="bom">
   {%- for page in term.pages %}
   {{ m::bom_row(page=page, n=loop.index) }}

@@ -1,3 +1,4 @@
+{%- import "macros.html" as m -%}
 <!DOCTYPE html>
 <html lang="{{ lang | default(value=config.default_language) }}" data-theme="blueprint">
 <head>
@@ -37,11 +38,16 @@
 <body>
 {%- set bp_posts = get_section(path="posts/_index.md") -%}
 {%- set post_count = bp_posts.pages | length -%}
+{#- On a post page, precompute the distributed-read console vars (base.html can call
+    macros directly; an included partial cannot — see CLAUDE.md). -#}
+{%- set bp_is_post = false -%}
+{%- if page and page.slug -%}
+  {%- set bp_is_post = true -%}
+  {%- set bp_seed = m::seed(slug=page.slug) | trim -%}
+  {%- set bp_replica = config.extra.read_replica | default(value="node-0") -%}
+{%- endif -%}
 
 <div class="sheet">
-  {% if config.extra.chaos_enabled | default(value=true) %}<div class="chaos-banner">⚠ PARTITION DETECTED — node-3 unreachable · degraded mode</div>{% endif %}
-
-  {% include "partials/titleblock.html" %}
   {% include "partials/nav.html" %}
   {% include "partials/console.html" %}
   {% if config.extra.chaos_enabled | default(value=true) %}{% include "partials/chaos.html" %}{% endif %}
@@ -55,6 +61,7 @@
 {% include "partials/statusbar.html" %}
 
 <script src="{{ get_url(path='js/theme-toggle.js') | safe }}" defer></script>
+<script src="{{ get_url(path='js/render.js') | safe }}" defer></script>
 {% if config.extra.chaos_enabled | default(value=true) %}<script src="{{ get_url(path='js/chaos.js') | safe }}" defer></script>{% endif %}
 {% if config.extra.search.enabled | default(value=false) %}
 <script src="{{ get_url(path='js/elasticlunr.min.js') | safe }}" defer></script>

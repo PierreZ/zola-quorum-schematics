@@ -1,8 +1,8 @@
 # pierrez-blueprint
 
 A [Zola](https://www.getzola.org) theme that looks like an **architect's drawing
-sheet** but breathes like a **terminal**: a title-block cartouche, a build-log prompt
-with a blinking cursor, a fixed status bar, an opt-in "chaos" fault-injection toggle,
+sheet** but breathes like a **terminal**: a terminal command-history nav, a build-log prompt
+with a blinking cursor, a fixed status bar, an opt-in disk-failure fault-injection toggle,
 and two color themes — `blueprint` (ink on warm paper, light) and `cyanotype` (the
 negative: cyan on navy, dark).
 
@@ -15,9 +15,12 @@ reserved for failure states. Zero CDN — the font is self-hosted.
 
 - Two color themes with a JS toggle that **persists** (`localStorage`) and respects
   `prefers-color-scheme` on first load — no flash of the wrong theme.
-- **Opt-in chaos toggle**: injects a `PARTITION DETECTED` banner, turns node-3 of the
-  cluster schematic red, and degrades the status bar to `nodes: 2/3 degraded`. Nothing
-  moves until you click. Independent from the color toggle.
+- **Opt-in disk-failure toggle**: simulates a failing data disk. The article is re-served
+  from corrupted blocks — a handful of words are scrambled with **typoglycemia** (first &
+  last letter kept, middle shuffled, so it stays readable), the console reports a
+  `✗ read error`, node-3 of the cluster goes red, and the status bar drops to
+  `disk: read errors`. The corruption **re-rolls on every reload**; *heal disk* restores
+  the original exactly. Nothing moves until you click. Independent from the color toggle.
 - **Deterministic seed** per post, derived from its slug (stable hex like `0x4f2a91e`),
   shown in the post list and article meta.
 - **Build log** that reflects the real number of posts; footer **vector clock**
@@ -27,7 +30,7 @@ reserved for failure states. Zero CDN — the font is self-hosted.
 - Dual syntax-highlighting stylesheets (light + dark) switched with the theme.
 - RSS + Atom feeds, sitemap, tag taxonomy with its own index, optional client-side
   search (self-hosted elasticlunr), self-hosted JetBrains Mono.
-- Responsive: the cartouche folds, the nav collapses, the BOM stacks at narrow widths.
+- Responsive: the footer cartouche folds, the nav collapses, the BOM stacks at narrow widths.
 
 ## Requirements
 
@@ -78,33 +81,36 @@ dark_theme = "solarized-dark"
 All keys are **optional**; each has a sensible default baked into the templates. Copy
 what you want to override into your site's `[extra]`.
 
-### Title block (cartouche)
+### Console strip (the terminal client)
 
-| Key | Default | Description |
-|-----|---------|-------------|
-| `project` | `config.title` | Project name (top-left cell) |
-| `sheet` | `01 / 01` | Sheet number |
-| `scale` | `1:1` | Drawing scale |
-| `drawn_by` | `config.author` | Author initials (cyan cell) |
-| `cluster_enabled` | `true` | Show the 3-node cluster schematic |
-
-### Console strip (build-log prompt)
+The console is the client reading from the cluster. On the home and section pages it
+echoes the build line; on a **post** it echoes a **quorum read** for the document:
+`read --quorum posts/<slug>` → `✓ quorum 2/3 · served by <node> · seed <0x…>`. The
+serving node is chosen at random on every refresh (and highlighted in the schematic),
+so the read lands on a different replica each time. The 3-node cluster schematic
+(0-indexed: `node-0`–`node-2`) is drawn in this strip.
 
 | Key | Default | Description |
 |-----|---------|-------------|
 | `prompt_user` | `user@host` | Text before the `:` |
 | `prompt_path` | `~/blog` | Path after the `:` |
-| `build_command` | `./build --deterministic` | The echoed command |
+| `build_command` | `./build --deterministic` | Command echoed on index/section pages |
+| `read_replica` | `node-0` | Server-side default node (randomized client-side per load) |
+| `cluster_enabled` | `true` | Show the 3-node cluster schematic in the console |
 
 The output line `✓ N posts compiled` always uses the **real** post count from
-`content/posts/`.
+`content/posts/`. The per-post consistency level shown in the article meta comes from
+`page.extra.consistency` (falling back to `extra.default_consistency`).
 
-### Chaos / fault injection
+### Fault injection (disk failure)
 
 | Key | Default | Description |
 |-----|---------|-------------|
-| `chaos_enabled` | `true` | Show the fault-injection bar + banner |
-| `chaos_hint` | `simulate a network split, Jepsen-style` | Right-aligned hint text |
+| `chaos_enabled` | `true` | Show the fault-injection bar (`inject disk failure`) |
+| `chaos_hint` | _(none)_ | Optional hint text on the right of the fault bar |
+
+The corruption (typoglycemia) is applied to content on **every page** — the hero, the
+post list, and article bodies — never to the terminal chrome (nav, console, footer).
 
 ### Hero (home page)
 
