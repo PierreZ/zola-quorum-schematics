@@ -1,0 +1,5 @@
+<div class="chaos-bar">
+  <span>fault injection:</span>
+  <button class="chaos-btn" id="chaosbtn" type="button">inject partition</button>
+  <span style="margin-left:auto;color:var(--ink-faint)">{{ config.extra.chaos_hint | default(value="simulate a network split, Jepsen-style") }}</span>
+</div>

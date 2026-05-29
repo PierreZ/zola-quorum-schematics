@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}{{ taxonomy.name }} · {{ config.title }}{% endblock title %}
+{% block description %}Index of {{ taxonomy.name }}.{% endblock description %}
+
+{% block content %}
+<div class="sec-head">ls ./{{ taxonomy.name }} <span class="ref">ref. /{{ taxonomy.name }}</span></div>
+<div class="bom">
+  {%- for term in terms %}
+  <div class="row">
+    <div class="no">#</div>
+    <div class="date">{{ term.pages | length }} post{{ term.pages | length | pluralize }}</div>
+    <div>
+      <a class="ttl" href="{{ term.permalink | safe }}">#{{ term.name }}</a>
+    </div>
+  </div>
+  {%- else %}
+  <div class="row"><div class="no">000</div><div></div><div class="ttl">no tags yet</div></div>
+  {%- endfor %}
+</div>
+{% endblock content %}

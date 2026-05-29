@@ -1,0 +1,11 @@
+<div class="titleblock">
+  <div class="cell"><span class="label">project</span><span class="val">{{ config.extra.project | default(value=config.title) }}</span></div>
+  <div class="cell"><span class="label">sheet</span><span class="val">{{ config.extra.sheet | default(value="01 / 01") }}</span></div>
+  <div class="cell"><span class="label">scale</span><span class="val">{{ config.extra.scale | default(value="1:1") }}</span></div>
+  <div class="cell drawn-by"><span class="label">drawn by</span><span class="val">{{ config.extra.drawn_by | default(value=config.author | default(value="—")) }}</span></div>
+  {%- if config.extra.cluster_enabled | default(value=true) %}
+  <div class="cluster-cell">
+    {% include "partials/cluster.html" %}
+  </div>
+  {%- endif %}
+</div>

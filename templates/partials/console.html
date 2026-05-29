@@ -1,0 +1,4 @@
+<div class="console">
+  <div class="ln"><span class="sig">{{ config.extra.prompt_user | default(value="user@host") }}</span>:<span class="path">{{ config.extra.prompt_path | default(value="~/blog") }}</span>$ {{ config.extra.build_command | default(value="./build --deterministic") }}</div>
+  <div class="ln out"><span class="ok">✓</span> {{ post_count }} post{{ post_count | pluralize }} compiled · 0 warnings · seed locked · <span class="ok">build ok</span><span class="cursor"></span></div>
+</div>

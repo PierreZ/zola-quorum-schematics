@@ -1,0 +1,118 @@
+# ==========================================================================
+#  pierrez-blueprint — demo site config (doubles as living documentation)
+#  This file configures the EXAMPLE site shipped with the theme. When you use
+#  the theme in your own site, copy the [extra] block below and adapt it.
+# ==========================================================================
+
+base_url = "https://example.com"
+title = "Pierre Zemb — blueprint × terminal"
+description = "A Zola theme that looks like an architect's drawing sheet but breathes like a terminal."
+author = "Pierre Zemb"
+
+# Taxonomies: tags, with their own feeds.
+taxonomies = [
+  { name = "tags", feed = true },
+]
+
+# Feeds (RSS + Atom) and search index.
+generate_feeds = true
+feed_filenames = ["atom.xml", "rss.xml"]
+build_search_index = true
+
+# We ship plain CSS (no Sass).
+compile_sass = false
+
+# Link checker: keep `zola check` green offline by skipping external social
+# domains used in the demo content. Internal links & anchors are still checked.
+[link_checker]
+skip_prefixes = [
+  "https://github.com",
+  "https://twitter.com",
+  "https://bsky.app",
+  "https://www.clever-cloud.com",
+  "https://example.com",
+]
+
+[markdown]
+# Clickable anchors on headings (the `#` revealed on hover).
+insert_anchor_links = "right"
+
+[markdown.highlighting]
+# Emit highlighting as CSS classes so we can ship a light + a dark stylesheet
+# and switch between them with the color-theme toggle (instead of being locked
+# to prefers-color-scheme via media queries).
+style = "class"
+light_theme = "solarized-light"
+dark_theme = "solarized-dark"
+
+[search]
+include_title = true
+include_description = true
+include_content = true
+
+# ==========================================================================
+#  THEME OPTIONS — every key below is optional and has a sensible default in
+#  the templates. See README.md for the full reference.
+# ==========================================================================
+[extra]
+
+# --- Title block (the cartouche at the very top) ---
+project   = "pierrezemb.fr — personal blog"
+sheet     = "01 / 01"
+scale     = "1:1"
+drawn_by  = "P. ZEMB"
+
+# --- Console strip (the build-log prompt line) ---
+prompt_user   = "pierre@clever-cloud"
+prompt_path   = "~/blog"
+build_command = "./build --deterministic"
+
+# --- Cluster schematic (3 nodes drawn in the title block) ---
+cluster_enabled = true
+
+# --- Fault-injection / chaos toggle (opt-in; nothing moves without a click) ---
+chaos_enabled = true
+chaos_hint    = "simulate a network split, Jepsen-style"
+
+# --- Hero specs (home page) ---
+specs = [
+  { label = "domain", value = "distributed systems" },
+  { label = "focus", value = "simulation & correctness" },
+  { label = "lang", value = "rust" },
+]
+# Dimension line under the hero.
+dimline_start = "2019"
+dimline_end   = "2026 · 6 yrs"
+
+# --- Article defaults ---
+default_consistency = "linearizable"
+
+# --- Status bar (fixed, tmux/htop style) ---
+status_online = "● online"
+status_uptime = "uptime: 6y"
+
+# --- Footer: revision history + vector clock + social links ---
+copyright   = "© 2026 Pierre Zemb · built deterministically"
+clock_rev   = "A"   # the `rev:` field of the logical clock
+[extra.search]
+enabled = true
+
+[[extra.nav]]
+name = "home"
+url = "$BASE_URL/"
+[[extra.nav]]
+name = "blog"
+url = "$BASE_URL/posts/"
+[[extra.nav]]
+name = "tags"
+url = "$BASE_URL/tags/"
+
+[[extra.social]]
+name = "github"
+url = "https://github.com/PierreZ"
+[[extra.social]]
+name = "twitter"
+url = "https://twitter.com/PierreZ"
+[[extra.social]]
+name = "bluesky"
+url = "https://bsky.app/profile/pierrezemb.fr"

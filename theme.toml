@@ -1,0 +1,43 @@
+name = "pierrez-blueprint"
+description = "An architect's drawing sheet that breathes like a terminal: title block, build log, status bar, blinking cursor, opt-in chaos toggle. Two color themes (blueprint / cyanotype), 100% monospace, zero CDN."
+license = "MIT"
+homepage = "https://github.com/PierreZ/pierrez-blueprint"
+# Minimum Zola version: needs highlight_themes_css + page.toc + now().
+min_version = "0.19.0"
+demo = "https://github.com/PierreZ/pierrez-blueprint"
+
+[author]
+name = "Pierre Zemb"
+homepage = "https://pierrezemb.fr"
+
+[original]
+author = "Pierre Zemb"
+homepage = "https://pierrezemb.fr"
+repo = "https://github.com/PierreZ/pierrez-blueprint"
+
+# ---------------------------------------------------------------------------
+# Documented theme options. Every key is optional; defaults live in templates.
+# Copy the matching keys into your own site's [extra]. See README.md.
+# ---------------------------------------------------------------------------
+[extra]
+project = "pierrezemb.fr — personal blog"   # title-block: project name
+sheet = "01 / 01"                            # title-block: sheet number
+scale = "1:1"                                # title-block: scale
+drawn_by = "P. ZEMB"                         # title-block: author initials
+prompt_user = "pierre@clever-cloud"          # console: user@host before the $
+prompt_path = "~/blog"                       # console: path after the colon
+build_command = "./build --deterministic"    # console: the command echoed
+cluster_enabled = true                       # show the 3-node cluster schematic
+chaos_enabled = true                         # show the fault-injection bar
+chaos_hint = "simulate a network split, Jepsen-style"
+dimline_start = "2019"                        # hero dimension line, left end
+dimline_end = "2026 · 6 yrs"                  # hero dimension line, right end
+default_consistency = "linearizable"          # fallback for page.extra.consistency
+status_online = "● online"                    # status bar, left label
+status_uptime = "uptime: 6y"                  # status bar, uptime label
+copyright = "© 2026 Pierre Zemb · built deterministically"
+clock_rev = "A"                               # vector clock: rev: field
+# specs = [{label, value}, ...]               # hero spec cells
+# nav = [{name, url}, ...]                     # top navigation links
+# social = [{name, url}, ...]                  # footer social links
+# [extra.search] enabled = true               # client-side search box

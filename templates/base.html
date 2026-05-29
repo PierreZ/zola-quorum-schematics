@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="{{ lang | default(value=config.default_language) }}" data-theme="blueprint">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ config.title }}{% endblock title %}</title>
+  <meta name="description" content="{% block description %}{{ config.description }}{% endblock description %}">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+
+  <link rel="preload" href="{{ get_url(path='fonts/JetBrainsMono-Regular.woff2') | safe }}" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="{{ get_url(path='css/main.css') | safe }}">
+  <link rel="stylesheet" id="syntax-light" href="{{ get_url(path='giallo-light.css') | safe }}">
+  <link rel="stylesheet" id="syntax-dark" href="{{ get_url(path='giallo-dark.css') | safe }}" disabled>
+  {%- if config.generate_feeds %}
+  <link rel="alternate" type="application/atom+xml" title="{{ config.title }}" href="{{ get_url(path='atom.xml') | safe }}">
+  <link rel="alternate" type="application/rss+xml" title="{{ config.title }}" href="{{ get_url(path='rss.xml') | safe }}">
+  {%- endif %}
+  {% block extra_head %}{% endblock extra_head %}
+
+  <script>
+  // Set theme before first paint (no flash). Persisted choice wins, else OS.
+  (function () {
+    try {
+      var saved = localStorage.getItem("bp-theme");
+      var dark = saved ? saved === "cyanotype"
+                       : window.matchMedia("(prefers-color-scheme: dark)").matches;
+      var theme = dark ? "cyanotype" : "blueprint";
+      document.documentElement.setAttribute("data-theme", theme);
+      var l = document.getElementById("syntax-light");
+      var d = document.getElementById("syntax-dark");
+      if (l) l.disabled = dark;
+      if (d) d.disabled = !dark;
+    } catch (e) {}
+  })();
+  </script>
+</head>
+<body>
+{%- set bp_posts = get_section(path="posts/_index.md") -%}
+{%- set post_count = bp_posts.pages | length -%}
+
+<div class="sheet">
+  {% if config.extra.chaos_enabled | default(value=true) %}<div class="chaos-banner">⚠ PARTITION DETECTED — node-3 unreachable · degraded mode</div>{% endif %}
+
+  {% include "partials/titleblock.html" %}
+  {% include "partials/nav.html" %}
+  {% include "partials/console.html" %}
+  {% if config.extra.chaos_enabled | default(value=true) %}{% include "partials/chaos.html" %}{% endif %}
+  {% if config.extra.search.enabled | default(value=false) %}{% include "partials/search.html" %}{% endif %}
+
+  {% block content %}{% endblock content %}
+
+  {% include "partials/footer.html" %}
+</div>
+
+{% include "partials/statusbar.html" %}
+
+<script src="{{ get_url(path='js/theme-toggle.js') | safe }}" defer></script>
+{% if config.extra.chaos_enabled | default(value=true) %}<script src="{{ get_url(path='js/chaos.js') | safe }}" defer></script>{% endif %}
+{% if config.extra.search.enabled | default(value=false) %}
+<script src="{{ get_url(path='js/elasticlunr.min.js') | safe }}" defer></script>
+<script src="{{ get_url(path='search_index.' ~ config.default_language ~ '.js') | safe }}" defer></script>
+<script src="{{ get_url(path='js/search.js') | safe }}" defer></script>
+{% endif %}
+{% block extra_body %}{% endblock extra_body %}
+</body>
+</html>

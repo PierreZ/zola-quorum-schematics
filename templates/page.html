@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+
+{% block title %}{{ page.title }} · {{ config.title }}{% endblock title %}
+{% block description %}{{ page.description | default(value=config.description) }}{% endblock description %}
+
+{% block content %}
+<article class="article">
+  <div class="crumbs">
+    <span class="sig">~</span> / <a href="{{ get_url(path='@/posts/_index.md') | safe }}">blog</a> / {{ page.slug }}
+    &nbsp;·&nbsp; rev. {{ config.extra.clock_rev | default(value="A") }}
+  </div>
+
+  <h2 class="title">{{ page.title }}</h2>
+
+  <div class="meta-row">
+    {%- if page.date %}<span class="m"><b>{{ page.date | date(format="%Y-%m-%d") }}</b></span>{% endif %}
+    <span class="m">read: <b>~{{ page.reading_time }} min</b></span>
+    <span class="m">seed: <b>{{ m::seed(slug=page.slug) | trim }}</b></span>
+    <span class="m consistency">consistency: <b>{{ page.extra.consistency | default(value=config.extra.default_consistency | default(value="linearizable")) }}</b></span>
+  </div>
+
+  {%- if page.toc %}
+  <nav class="toc">
+    <div class="h">index of sections</div>
+    <ol>
+      {%- for h in page.toc %}
+      <li><span class="n">{{ loop.index }}.0</span><a href="{{ h.permalink | safe }}">{{ h.title }}</a></li>
+      {%- endfor %}
+    </ol>
+  </nav>
+  {%- endif %}
+
+  <div class="prose">
+    {{ page.content | safe }}
+  </div>
+</article>
+{% endblock content %}

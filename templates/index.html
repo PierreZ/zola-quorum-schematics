@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% import "macros.html" as m %}
+
+{% block content %}
+<section class="hero">
+  <span class="fig">fig. 1 — author</span>
+  {% if section.title %}<h1>{{ section.title | safe }}</h1>{% endif %}
+  <div class="hero-intro">
+    {{ section.content | safe }}
+  </div>
+  {%- if config.extra.specs %}
+  <div class="specs">
+    {%- for s in config.extra.specs %}<span><b>{{ s.label }}:</b> {{ s.value }}</span>{% endfor %}
+  </div>
+  {%- endif %}
+  {%- if config.extra.dimline_start or config.extra.dimline_end %}
+  <div class="dimline"><span>{{ config.extra.dimline_start }}</span><span class="bar"></span><span>{{ config.extra.dimline_end }}</span></div>
+  {%- endif %}
+</section>
+
+{%- set posts = get_section(path="posts/_index.md") %}
+<div class="sec-head">ls ./posts <span class="ref">ref. /posts</span></div>
+<div class="bom">
+  {%- for page in posts.pages %}
+  {{ m::bom_row(page=page, n=loop.index) }}
+  {%- endfor %}
+</div>
+{% endblock content %}

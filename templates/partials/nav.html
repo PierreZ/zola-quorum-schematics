@@ -1,0 +1,13 @@
+<div class="topnav">
+  <a class="logo" href="{{ config.base_url | safe }}">{{ config.title | truncate(length=18, end="") }}</a>
+  <nav>
+    {%- if config.extra.nav %}
+      {%- for item in config.extra.nav %}
+      <a href="{{ item.url | replace(from='$BASE_URL', to=config.base_url) | safe }}">{{ item.name }}</a>
+      {%- endfor %}
+    {%- else %}
+      <a href="{{ config.base_url | safe }}">home</a><a href="{{ get_url(path='@/posts/_index.md') | safe }}">blog</a><a href="{{ get_url(path='tags') | safe }}">tags</a>
+    {%- endif %}
+  </nav>
+  <button class="flip" id="flipbtn" type="button" aria-label="toggle color theme">⊕ cyanotype</button>
+</div>
