@@ -1,10 +1,10 @@
-# pierrez-blueprint
+# zola-quorum-schematics
 
 A [Zola](https://www.getzola.org) theme that looks like an **architect's drawing
-sheet** but breathes like a **terminal**: a terminal command-history nav, a build-log prompt
-with a blinking cursor, a fixed status bar, an opt-in disk-failure fault-injection toggle,
-and two color themes — `blueprint` (ink on warm paper, light) and `cyanotype` (the
-negative: cyan on navy, dark).
+sheet** but breathes like a **terminal**: a command-history nav, a page-aware quorum-read
+console with a blinking cursor, a fixed status bar, and a hidden disk-failure easter egg.
+Two color themes — `blueprint` (ink on warm paper, light) and `cyanotype` (the negative:
+cyan on navy, dark).
 
 100% monospace. Fine `1px` borders instead of shadows. A single accent cyan, with red
 reserved for failure states. Zero CDN — the font is self-hosted.
@@ -15,8 +15,8 @@ reserved for failure states. Zero CDN — the font is self-hosted.
 
 - Two color themes with a JS toggle that **persists** (`localStorage`) and respects
   `prefers-color-scheme` on first load — no flash of the wrong theme.
-- **Hidden disk-failure easter egg** (👾 button by the theme toggle, or click a node in
-  the cluster): simulates a failing data disk. Content is re-served from corrupted blocks —
+- **Hidden disk-failure easter egg** (👾 button by the theme toggle, or click the cluster
+  block): simulates a failing data disk. Content is re-served from corrupted blocks —
   words are scrambled with **typoglycemia** (first & last letter kept, middle shuffled, so
   it stays readable), the console reports a `✗ … checksum mismatch`, the failed replica
   goes red, and the status bar drops to `disk: read errors`. **Re-rolls on every reload**;
@@ -42,21 +42,21 @@ reserved for failure states. Zero CDN — the font is self-hosted.
 From your site's root:
 
 ```bash
-git submodule add https://github.com/PierreZ/pierrez-blueprint themes/pierrez-blueprint
+git submodule add https://github.com/PierreZ/zola-quorum-schematics themes/zola-quorum-schematics
 # or just copy the folder into themes/
 ```
 
 Then in your `config.toml`:
 
 ```toml
-theme = "pierrez-blueprint"
+theme = "zola-quorum-schematics"
 ```
 
 The theme expects:
 
 - A `tags` taxonomy and feeds/search enabled (copy the snippet below).
-- Your posts to live in a section at `content/posts/` (used for the build-log count and
-  the home/section listings).
+- Your posts to live in a section at `content/posts/` (used for the console document count
+  and the home/section listings).
 
 ```toml
 taxonomies = [{ name = "tags", feed = true }]
@@ -116,7 +116,7 @@ that meta row too (not in the console).
 There is no labelled control. Two triggers arm the same disk failure:
 
 - the **👾 button** next to the color-theme toggle in the nav, and
-- **clicking a node** in the cluster schematic (the quorum) — that node's disk fails.
+- **clicking the cluster block** in the console (the quorum) — the replica being read fails.
 
 Either one re-serves the page from corrupted blocks: words are scrambled with
 typoglycemia on **every page** (hero, post list, article bodies — never the terminal

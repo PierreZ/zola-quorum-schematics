@@ -1,10 +1,11 @@
-name = "pierrez-blueprint"
-description = "An architect's drawing sheet that breathes like a terminal: title block, build log, status bar, blinking cursor, opt-in chaos toggle. Two color themes (blueprint / cyanotype), 100% monospace, zero CDN."
+name = "zola-quorum-schematics"
+description = "An architect's drawing sheet that breathes like a terminal: command-history nav, page-aware quorum-read console, status bar, blinking cursor, and a hidden disk-failure easter egg. Two color themes (blueprint / cyanotype), 100% monospace, zero CDN."
 license = "MIT"
-homepage = "https://github.com/PierreZ/pierrez-blueprint"
-# Minimum Zola version: needs highlight_themes_css + page.toc + now().
+homepage = "https://github.com/PierreZ/zola-quorum-schematics"
+# Minimum Zola version: 0.19 introduced the [markdown.highlighting] config
+# (class style + light_theme/dark_theme) this theme relies on; also needs page.toc + now().
 min_version = "0.19.0"
-demo = "https://github.com/PierreZ/pierrez-blueprint"
+demo = "https://github.com/PierreZ/zola-quorum-schematics"
 
 [author]
 name = "Pierre Zemb"
@@ -13,7 +14,7 @@ homepage = "https://pierrezemb.fr"
 [original]
 author = "Pierre Zemb"
 homepage = "https://pierrezemb.fr"
-repo = "https://github.com/PierreZ/pierrez-blueprint"
+repo = "https://github.com/PierreZ/zola-quorum-schematics"
 
 # ---------------------------------------------------------------------------
 # Documented theme options. Every key is optional; defaults live in templates.

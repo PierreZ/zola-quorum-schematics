@@ -29,13 +29,20 @@
     });
   }
 
-  // Typoglycemia: keep the first and last letter, shuffle the middle.
+  // Typoglycemia: keep the first and last letter, shuffle the middle. Re-shuffle
+  // until the result actually differs (a random shuffle can reproduce the input,
+  // especially for short words); returns the word unchanged if it can't differ
+  // (e.g. "feel" -> middle "ee"), and the caller then leaves it uncorrupted.
   function typoglyce(word) {
     if (word.length < 4) return word;
     var mid = word.slice(1, -1).split("");
-    for (var i = mid.length - 1; i > 0; i--) {
-      var j = Math.floor(Math.random() * (i + 1));
-      var t = mid[i]; mid[i] = mid[j]; mid[j] = t;
+    var original = mid.join("");
+    for (var attempt = 0; attempt < 12; attempt++) {
+      for (var i = mid.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = mid[i]; mid[i] = mid[j]; mid[j] = t;
+      }
+      if (mid.join("") !== original) break;
     }
     return word.charAt(0) + mid.join("") + word.charAt(word.length - 1);
   }
@@ -79,7 +86,9 @@
     var touched = {};
     for (var c = 0; c < total; c++) {
       var ni = cands[c][0], pj = cands[c][1];
-      split[ni][pj] = '<span class="rot">' + escapeHtml(typoglyce(split[ni][pj])) + "</span>";
+      var scrambled = typoglyce(split[ni][pj]);
+      if (scrambled === split[ni][pj]) continue; // couldn't differ — leave it clean
+      split[ni][pj] = '<span class="rot">' + escapeHtml(scrambled) + "</span>";
       touched[ni] = true;
     }
     for (var idx in touched) {

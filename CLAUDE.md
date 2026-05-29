@@ -1,4 +1,4 @@
-# CLAUDE.md — pierrez-blueprint
+# CLAUDE.md — zola-quorum-schematics
 
 A standalone, publishable **Zola theme** (`blueprint × terminal`). This repo is *itself*
 a runnable Zola site — its `content/`, `config.toml`, `templates/`, `static/` are both
@@ -22,11 +22,12 @@ committing (the "dirty Git tree" line is from Nix, not Zola — ignore it).
   `title` / `description` / `content` / `extra_head` / `extra_body`. Computes
   `post_count` from `get_section(path="posts/_index.md")`.
 - `templates/macros.html` — `seed(slug)`, `lineno(n)`, `bom_row(page, n)`.
-- `templates/partials/` — cluster (clickable SVG in the console; clicking a node arms the
-  disk-failure egg), nav (terminal command-history + the 👾 fault button + search), console
-  (page-aware `./read --quorum <target>`), statusbar, footer. No title block, no chaos bar.
-  Disk failure is a hidden easter egg (👾 button or cluster-node click) wired in
-  `static/js/chaos.js`; `chaos_enabled` arms it.
+- `templates/partials/` — cluster (SVG in the console; the whole `.cluster-cell` block is
+  one click target that arms the disk-failure egg), nav (terminal command-history + the 👾
+  fault button + search), console (page-aware `./read --quorum <target>`), statusbar,
+  footer. No title block, no chaos bar. Disk failure is a hidden easter egg (👾 button or a
+  click anywhere on the cluster block) wired in `static/js/chaos.js`; `chaos_enabled` arms
+  it.
 - `templates/{index,section,page,taxonomy_list,taxonomy_single}.html`.
 - `templates/shortcodes/{quote,note}.html`.
 - `static/{css,js,fonts}/`. JS is plain vanilla, no build step.
