@@ -37,7 +37,10 @@
     return word.charAt(0) + mid.join("") + word.charAt(word.length - 1);
   }
 
-  // Scramble a bounded number of words within one root. Re-rolled each call.
+  var RATE = 0.05; // ~5% of words corrupted, spread across the whole region
+  var MIN = 3, MAX = 20;
+
+  // Scramble words spread uniformly across one region. Re-rolled each call.
   function corrupt(root) {
     if (reduced) return;
     var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
@@ -54,27 +57,39 @@
     var textNodes = [], n;
     while ((n = walker.nextNode())) textNodes.push(n);
 
-    var budget = 8; // words to corrupt within this region
-    for (var i = 0; i < textNodes.length && budget > 0; i++) {
-      var node = textNodes[i];
-      var parts = node.nodeValue.split(/(\s+)/); // keep whitespace tokens
-      var changed = false;
-      for (var j = 0; j < parts.length && budget > 0; j++) {
-        if (!/^[A-Za-z]{4,}$/.test(parts[j])) continue;
-        if (Math.random() < 0.22) {
-          parts[j] = '<span class="rot">' + escapeHtml(typoglyce(parts[j])) + "</span>";
-          changed = true;
-          budget--;
-        }
+    // Collect every eligible word (node index + token index) up front, so we
+    // can sample uniformly instead of consuming a budget top-down.
+    var split = [], cands = [];
+    for (var i = 0; i < textNodes.length; i++) {
+      var parts = textNodes[i].nodeValue.split(/(\s+)/); // keep whitespace tokens
+      split[i] = parts;
+      for (var j = 0; j < parts.length; j++) {
+        if (/^[A-Za-z]{4,}$/.test(parts[j])) cands.push([i, j]);
       }
-      if (changed) {
-        for (var k = 0; k < parts.length; k++) {
-          if (parts[k].charAt(0) !== "<") parts[k] = escapeHtml(parts[k]);
-        }
-        var span = document.createElement("span");
-        span.innerHTML = parts.join("");
-        node.parentNode.replaceChild(span, node);
+    }
+    if (!cands.length) return;
+
+    var total = Math.min(Math.max(Math.round(cands.length * RATE), MIN), MAX);
+    total = Math.min(total, cands.length);
+    // partial Fisher-Yates: pick `total` distinct candidates uniformly
+    for (var k = 0; k < total; k++) {
+      var r = k + Math.floor(Math.random() * (cands.length - k));
+      var tmp = cands[k]; cands[k] = cands[r]; cands[r] = tmp;
+    }
+    var touched = {};
+    for (var c = 0; c < total; c++) {
+      var ni = cands[c][0], pj = cands[c][1];
+      split[ni][pj] = '<span class="rot">' + escapeHtml(typoglyce(split[ni][pj])) + "</span>";
+      touched[ni] = true;
+    }
+    for (var idx in touched) {
+      var p2 = split[idx];
+      for (var m = 0; m < p2.length; m++) {
+        if (p2[m].charAt(0) !== "<") p2[m] = escapeHtml(p2[m]);
       }
+      var span = document.createElement("span");
+      span.innerHTML = p2.join("");
+      textNodes[idx].parentNode.replaceChild(span, textNodes[idx]);
     }
   }
 

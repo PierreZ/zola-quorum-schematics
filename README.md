@@ -85,10 +85,11 @@ what you want to override into your site's `[extra]`.
 
 The console is the client reading from the cluster. On the home and section pages it
 echoes the build line; on a **post** it echoes a **quorum read** for the document:
-`read --quorum posts/<slug>` → `✓ quorum 2/3 · served by <node> · seed <0x…>`. The
-serving node is chosen at random on every refresh (and highlighted in the schematic),
-so the read lands on a different replica each time. The 3-node cluster schematic
-(0-indexed: `node-0`–`node-2`) is drawn in this strip.
+`read --quorum posts/<slug>` → `✓ quorum 2/3 · served by <node> · seed <0x…>` (the
+index pages show `… · N documents · committed`). The serving node is chosen at random on
+every refresh (and highlighted in the schematic), so the read lands on a different
+replica each time. The 3-node cluster schematic (0-indexed: `node-0`–`node-2`) is drawn
+in this strip.
 
 | Key | Default | Description |
 |-----|---------|-------------|

@@ -20,9 +20,9 @@ repo = "https://github.com/PierreZ/pierrez-blueprint"
 # Copy the matching keys into your own site's [extra]. See README.md.
 # ---------------------------------------------------------------------------
 [extra]
-prompt_user = "pierrez@clever-cloud"         # console: user@host before the $
+prompt_user = "root@pierrezemb.fr"           # console: user@host before the $
 prompt_path = "~/blog"                       # console: path after the colon
-build_command = "./build --deterministic"    # console: command echoed on index/section
+build_command = "read --quorum ./posts"      # console: command echoed on index/section
 read_replica = "node-0"                      # console: replica a healthy post read serves from
 cluster_enabled = true                       # show the 3-node cluster schematic in the console
 chaos_enabled = true                         # show the disk-failure fault-injection bar

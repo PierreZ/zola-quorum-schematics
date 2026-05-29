@@ -57,9 +57,9 @@ include_content = true
 [extra]
 
 # --- Console strip (the terminal client: prompt + distributed read log) ---
-prompt_user   = "pierrez@clever-cloud"
+prompt_user   = "root@pierrezemb.fr"
 prompt_path   = "~/blog"
-build_command = "./build --deterministic"
+build_command = "read --quorum ./posts"
 # The replica a healthy post read is "served from", echoed in the console.
 read_replica  = "node-0"
 
@@ -70,15 +70,10 @@ cluster_enabled = true
 chaos_enabled = true
 # chaos_hint  = "…"   # optional text on the right of the fault bar (default: none)
 
-# --- Hero specs (home page) ---
-specs = [
-  { label = "domain", value = "distributed systems" },
-  { label = "focus", value = "simulation & correctness" },
-  { label = "lang", value = "rust" },
-]
-# Dimension line under the hero.
-dimline_start = "2019"
-dimline_end   = "2026 · 6 yrs"
+# --- Hero specs + dimension line (optional theme features; left off here) ---
+# specs = [{ label = "domain", value = "distributed systems" }, ...]
+# dimline_start = "2019"
+# dimline_end   = "2026 · 6 yrs"
 
 # --- Article defaults ---
 default_consistency = "linearizable"

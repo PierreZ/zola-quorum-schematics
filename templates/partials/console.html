@@ -4,8 +4,8 @@
     <div class="ln" id="console-cmd"><span class="sig">{{ config.extra.prompt_user | default(value="user@host") }}</span>:<span class="path">{{ config.extra.prompt_path | default(value="~/blog") }}</span>$ read --quorum posts/{{ page.slug }}</div>
     <div class="ln out"><span id="console-out"><span class="ok">✓</span> quorum 2/3 · served by <span class="rc-node">{{ bp_replica }}</span> · seed {{ bp_seed }}</span><span class="cursor"></span></div>
   {%- else %}
-    <div class="ln"><span class="sig">{{ config.extra.prompt_user | default(value="user@host") }}</span>:<span class="path">{{ config.extra.prompt_path | default(value="~/blog") }}</span>$ {{ config.extra.build_command | default(value="./build --deterministic") }}</div>
-    <div class="ln out" id="console-out"><span class="ok">✓</span> {{ post_count }} post{{ post_count | pluralize }} compiled · 0 warnings · seed locked · <span class="ok">build ok</span><span class="cursor"></span></div>
+    <div class="ln"><span class="sig">{{ config.extra.prompt_user | default(value="user@host") }}</span>:<span class="path">{{ config.extra.prompt_path | default(value="~/blog") }}</span>$ {{ config.extra.build_command | default(value="read --quorum ./posts") }}</div>
+    <div class="ln out" id="console-out"><span class="ok">✓</span> quorum 2/3 · {{ post_count }} document{{ post_count | pluralize }} · committed<span class="cursor"></span></div>
   {%- endif %}
   </div>
   {%- if config.extra.cluster_enabled | default(value=true) %}

@@ -118,7 +118,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .hero .fig { position: absolute; top: 1rem; right: 1.2rem; font-size: .68rem; color: var(--ink-faint); letter-spacing: .08em; }
 .hero h1 { font-size: clamp(1.7rem, 4.5vw, 2.5rem); letter-spacing: -.02em; line-height: 1.12; margin-bottom: 1rem; font-weight: 800; }
 .hero h1 .u { text-decoration: underline; text-decoration-color: var(--cyan); text-underline-offset: 6px; text-decoration-thickness: 2px; }
-.hero p { color: var(--ink-dim); max-width: 60ch; margin-bottom: .6rem; font-size: .94rem; }
+.hero p { color: var(--ink-dim); margin-bottom: .6rem; font-size: .94rem; }
 .hero p a { color: var(--cyan); }
 
 .dimline { display: flex; align-items: center; gap: .5rem; margin-top: 1.4rem; color: var(--ink-faint); font-size: .7rem; }
