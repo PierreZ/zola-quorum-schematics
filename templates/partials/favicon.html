@@ -1,0 +1,5 @@
+{# SVG favicon + web manifest (zero binary assets shipped). Drop your own
+   favicon.ico / apple-touch-icon.png / android-chrome PNGs into static/ and add
+   the matching <link> lines here if you want full legacy/PWA icon coverage. #}
+  <link rel="icon" href="{{ get_url(path='favicon.svg') | safe }}" type="image/svg+xml">
+  <link rel="manifest" href="{{ get_url(path='site.webmanifest') | safe }}">

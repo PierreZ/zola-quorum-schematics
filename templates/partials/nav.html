@@ -1,5 +1,5 @@
 <div class="topnav">
-  <a class="logo" href="{{ config.base_url | safe }}">{{ config.title | truncate(length=18, end="") }}</a>
+  <a class="logo" href="{{ config.base_url | safe }}">{{ config.extra.logo | default(value=config.title) }}</a>
   <nav>
     {%- if config.extra.nav %}
       {%- for item in config.extra.nav %}
@@ -16,7 +16,7 @@
   </div>
   {%- endif %}
   <button class="flip" id="flipbtn" type="button" aria-label="toggle color theme">⊕ dark</button>
-  {%- if config.extra.chaos_enabled | default(value=true) %}
-  <button class="invader" id="chaosbtn" type="button" aria-label="inject disk failure" aria-pressed="false" title="inject disk failure">👾</button>
+  {%- if config.extra.read_modes | default(value=true) %}
+  <button class="readmode" id="readbtn" type="button" aria-label="switch read mode" aria-pressed="false" title="switch to single read (R=1)">read: quorum</button>
   {%- endif %}
 </div>

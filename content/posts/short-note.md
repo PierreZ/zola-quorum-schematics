@@ -5,6 +5,11 @@ description = "Why every failing run in a deterministic test deserves a name, no
 
 [taxonomies]
 tags = ["dst", "correctness"]
+
+[extra]
+# Syndicated post: point search engines at the original to avoid duplicate-content
+# penalties. The theme emits <link rel="canonical"> from this.
+canonical = "https://example.com/posts/a-short-note-on-naming-seeds/"
 +++
 
 A seed is a name. `0x4f2a91e` is not noise — it is a reproducible universe in which your

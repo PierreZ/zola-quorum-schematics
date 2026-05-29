@@ -5,9 +5,6 @@ description = "Two days in D.C. with the correctness niche — the year LLM code
 
 [taxonomies]
 tags = ["simulation", "correctness", "llm"]
-
-[extra]
-consistency = "linearizable"
 +++
 
 BugBash 2026 was two days in Washington D.C., organized by Antithesis, dedicated to

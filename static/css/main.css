@@ -35,6 +35,7 @@
   --grid:      #cdd9e3;
   --grid-bold: #b4c6d6;
   --cyan:      #0a85b0;
+  --amber:     #b9770e;
   --red:       #c0392b;
   --selection: #cfe4ee;
   --status-bg: #15324d;
@@ -50,6 +51,7 @@
   --grid:      #1c374a;
   --grid-bold: #244658;
   --cyan:      #38c5e8;
+  --amber:     #e0a850;
   --red:       #e06c75;
   --selection: #1f4257;
   --status-bg: #38c5e8;
@@ -89,11 +91,11 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 @media (prefers-reduced-motion: reduce) { .cursor { animation: none; } }
 
 /* ---- SHEET ---- */
-.sheet { border: 1.5px solid var(--ink); background: var(--paper); margin: 1.4rem auto; max-width: 832px; position: relative; z-index: 1; }
+.sheet { border: 1.5px solid var(--ink); background: var(--paper); margin: 1.4rem auto; max-width: 960px; position: relative; z-index: 1; }
 
 /* ---- NAV = terminal command history ---- */
-.topnav { display: flex; align-items: center; gap: 1.2rem; padding: .7rem 1.2rem; border-bottom: 1px solid var(--grid-bold); font-size: .82rem; }
-.topnav .logo { font-weight: 700; color: var(--ink); letter-spacing: -.02em; }
+.topnav { display: flex; align-items: center; gap: 1.2rem; padding: .7rem 1.2rem; border-bottom: 1px solid var(--grid-bold); font-size: .86rem; }
+.topnav .logo { font-weight: 800; font-size: 1.22rem; color: var(--ink); letter-spacing: -.02em; white-space: nowrap; }
 .topnav .logo::before { content: "◳ "; color: var(--cyan); }
 .topnav nav { display: flex; gap: 1rem; margin-left: auto; }
 .topnav nav a { color: var(--ink-dim); }
@@ -167,6 +169,10 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .toc li .n { color: var(--cyan); width: 2rem; flex: none; }
 .toc a { color: var(--ink); }
 .toc a:hover { color: var(--cyan); text-decoration: none; }
+.toc li { flex-wrap: wrap; }
+.toc li .n { white-space: nowrap; }
+.toc ol ol { list-style: none; width: 100%; margin: .35rem 0 0 1.1rem; }
+.toc ol ol li { border-bottom: none; padding: .2rem 0; font-size: .82rem; }
 
 /* ---- PROSE (markdown body) ---- */
 .prose p { margin-bottom: 1.15rem; max-width: 70ch; }
@@ -218,11 +224,19 @@ code.inline, .prose p > code, .prose li > code { background: var(--paper-2); bor
 .note .note-h::before { content: "✎ "; color: var(--cyan); }
 .note p:last-child { margin-bottom: 0; }
 
+/* ---- MERMAID DIAGRAMS (shortcode) ---- */
+.mermaid { margin: 1.4rem 0; text-align: center; }
+.mermaid svg { max-width: 100%; height: auto; }
+
+/* ---- VIDEO EMBED (youtube shortcode) — responsive 16:9 ---- */
+.embed-video { position: relative; aspect-ratio: 16 / 9; margin: 1.4rem 0; border: 1px solid var(--grid-bold); background: var(--paper-2); }
+.embed-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+
 /* ---- FOOTER ---- */
-.foot { border-top: 1.5px solid var(--ink); display: grid; grid-template-columns: 1fr auto; font-size: .74rem; }
-.foot .cell { padding: .8rem 1.1rem; }
+.foot { border-top: 1.5px solid var(--ink); display: grid; grid-template-columns: 1fr auto; font-size: .88rem; }
+.foot .cell { padding: 1rem 1.2rem; }
 .foot .cell + .cell { border-left: 1px solid var(--grid-bold); }
-.foot .label { color: var(--ink-dim); text-transform: uppercase; letter-spacing: .1em; font-size: .62rem; display: block; }
+.foot .label { color: var(--cyan); text-transform: uppercase; letter-spacing: .12em; font-size: .72rem; display: block; margin-bottom: .3rem; }
 .foot .links { display: flex; gap: 1rem; margin-top: .3rem; flex-wrap: wrap; }
 .foot .links a { color: var(--ink); }
 .foot .links a:hover { color: var(--cyan); }
@@ -232,32 +246,33 @@ code.inline, .prose p > code, .prose li > code { background: var(--paper-2); bor
 .cluster { display: block; }
 .cluster .node { stroke: var(--ink-dim); fill: var(--paper); stroke-width: 1.2; transition: stroke-width .12s ease; }
 .cluster .node.active { stroke: var(--cyan); fill: var(--cyan); }
+/* the faulty replica, out-voted and read-repaired by a quorum read */
+.cluster .node.repairing { stroke: var(--amber); fill: var(--amber); }
 .cluster .node.failed { stroke: var(--red); fill: var(--red); }
 .cluster .link { stroke: var(--grid-bold); stroke-width: 1; }
-/* the whole cluster block is one big click target when fault injection is armed */
-.fault-armed .cluster-cell { cursor: pointer; }
-.fault-armed .cluster-cell:hover { background: var(--paper); }
-.fault-armed .cluster-cell:hover .node { stroke-width: 1.8; }
+/* the whole cluster block is a click target that switches read mode */
+.read-armed .cluster-cell { cursor: pointer; }
+.read-armed .cluster-cell:hover { background: var(--paper); }
+.read-armed .cluster-cell:hover .node { stroke-width: 1.8; }
 
 /* ---- CONSISTENCY BADGE (article meta) ---- */
 .meta-row { display: flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--grid-bold); margin-bottom: 1.4rem; font-size: .72rem; }
 .meta-row .m { padding: .35rem .7rem; border-right: 1px solid var(--grid-bold); color: var(--ink-dim); }
 .meta-row .m:last-child { border-right: none; }
 .meta-row .m b { color: var(--ink); font-weight: 600; }
-.meta-row .m.consistency b { color: var(--cyan); }
+.meta-row .m.tags a { color: var(--cyan); }
 
 /* ---- VECTOR CLOCK (footer) ---- */
-.vclock { color: var(--ink-faint); font-size: .68rem; margin-top: .25rem; }
+.vclock { color: var(--ink-dim); font-size: .78rem; margin-top: .4rem; }
 .vclock b { color: var(--cyan); font-weight: 600; }
 
-/* ---- FAULT INJECTION (disk failure) — hidden easter egg ---- */
-/* the 👾 button next to the theme toggle: greyscale at rest, comes alive on
-   hover, glows red while a disk is failed */
-.invader { background: none; border: 1px solid transparent; font-family: inherit; font-size: 1rem; line-height: 1; cursor: pointer; padding: .1rem .35rem; filter: grayscale(1); opacity: .7; transition: filter .15s ease, opacity .15s ease, border-color .15s ease; }
-.invader:hover { filter: none; opacity: 1; border-color: var(--cyan); }
-.invader.active { filter: none; opacity: 1; border-color: var(--red); }
+/* ---- READ-MODE TOGGLE (quorum R=2 ⇄ single R=1) ---- */
+/* sits next to the theme flip; turns red when a single read exposes the rot */
+.readmode { background: none; border: 1px solid var(--grid-bold); color: var(--ink-dim); font-family: inherit; font-size: .74rem; cursor: pointer; padding: .2rem .5rem; transition: border-color .15s ease, color .15s ease; }
+.readmode:hover { border-color: var(--cyan); color: var(--cyan); }
+.readmode.single { border-color: var(--red); color: var(--red); }
 
-/* typoglycemia artifacts injected into the content by a failing disk:
+/* typoglycemia artifacts from a single read on a corrupted replica:
    still readable (first/last letter intact), but marked as corrupted */
 .rot { text-decoration: underline dotted var(--red); text-decoration-thickness: 1px; text-underline-offset: 3px; }
 
@@ -276,14 +291,18 @@ code.inline, .prose p > code, .prose li > code { background: var(--paper-2); bor
 
 /* ---- STATUS BAR (terminal) ---- */
 .statusbar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 6; background: var(--status-bg); color: var(--status-fg); font-size: .72rem; height: 1.6rem; display: flex; align-items: center; }
-.statusbar .in { max-width: 832px; width: 100%; margin: 0 auto; padding: 0 1.2rem; display: flex; gap: 1.2rem; }
+.statusbar .in { max-width: 960px; width: 100%; margin: 0 auto; padding: 0 1.2rem; display: flex; gap: 1.2rem; }
 .statusbar .spacer { flex: 1; }
 
 @media (max-width: 640px) {
-  .topnav { flex-wrap: wrap; gap: .6rem; }
-  .topnav nav { display: none; }
+  .topnav { flex-wrap: wrap; gap: .5rem .9rem; }
+  /* Keep the nav reachable on phones: wrap the commands onto their own row
+     instead of hiding them entirely. */
+  .topnav nav { order: 3; width: 100%; margin-left: 0; flex-wrap: wrap; gap: .5rem .9rem; font-size: .78rem; }
   .bom .row { grid-template-columns: 2rem 1fr; }
   .bom .date { display: none; }
   .article, .hero, .bom { padding-left: 1.1rem; padding-right: 1.1rem; }
+  /* Wide markdown tables scroll instead of breaking the layout. */
+  .prose table { display: block; overflow-x: auto; }
   .statusbar .hide-sm { display: none; }
 }

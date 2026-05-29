@@ -16,6 +16,8 @@
   <link rel="alternate" type="application/atom+xml" title="{{ config.title }}" href="{{ get_url(path='atom.xml') | safe }}">
   <link rel="alternate" type="application/rss+xml" title="{{ config.title }}" href="{{ get_url(path='rss.xml') | safe }}">
   {%- endif %}
+  {% include "partials/head_meta.html" %}
+  {% include "partials/favicon.html" %}
   {% block extra_head %}{% endblock extra_head %}
 
   <script>
@@ -60,6 +62,11 @@
   {%- set bp_target = section.components | join(sep="/") -%}
   {%- set bp_count = section.pages | length -%}
 {%- endif -%}
+{#- 404: no page, section, or taxonomy in context → the read found nothing. -#}
+{%- if not page and not section and not term and not terms -%}
+  {%- set bp_kind = "404" -%}
+  {%- set bp_target = "404" -%}
+{%- endif -%}
 
 <div class="sheet">
   {% include "partials/nav.html" %}
@@ -73,8 +80,8 @@
 {% include "partials/statusbar.html" %}
 
 <script src="{{ get_url(path='js/theme-toggle.js') | safe }}" defer></script>
-<script src="{{ get_url(path='js/render.js') | safe }}" defer></script>
-{% if config.extra.chaos_enabled | default(value=true) %}<script src="{{ get_url(path='js/chaos.js') | safe }}" defer></script>{% endif %}
+<script id="read-ctl" src="{{ get_url(path='js/read.js') | safe }}" data-default-mode="{{ config.extra.default_read_mode | default(value='quorum') }}" data-enabled="{{ config.extra.read_modes | default(value=true) }}" defer></script>
+<script id="mermaid-init" src="{{ get_url(path='js/mermaid-init.js') | safe }}" data-src="{{ get_url(path='js/mermaid.min.js') | safe }}" defer></script>
 {% if config.extra.search.enabled | default(value=false) %}
 <script src="{{ get_url(path='js/elasticlunr.min.js') | safe }}" defer></script>
 <script src="{{ get_url(path='search_index.' ~ config.default_language ~ '.js') | safe }}" defer></script>

@@ -4,6 +4,7 @@
     <span class="hide-sm">{{ config.extra.status_uptime | default(value="uptime: —") }}</span>
     <span class="spacer"></span>
     <span class="hide-sm">last deploy: {{ now() | date(format="%Y-%m-%d") }}</span>
-    <span id="sb-nodes">nodes: 1/1 healthy</span>
+    <span id="sb-read" class="hide-sm">read: quorum R=2</span>
+    <span id="sb-nodes">nodes: 3/3 healthy</span>
   </div>
 </div>

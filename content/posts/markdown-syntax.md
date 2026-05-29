@@ -5,9 +5,6 @@ description = "A kitchen-sink article: every prose element the theme styles — 
 
 [taxonomies]
 tags = ["markdown", "reference"]
-
-[extra]
-consistency = "linearizable"
 +++
 
 A sample of the Markdown syntax usable in Zola content, doubling as a check that

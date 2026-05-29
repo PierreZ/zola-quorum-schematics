@@ -1,6 +1,5 @@
 +++
 title = "👋 Hi, I'm <span class=\"u\">Pierre Zemb</span>"
-sort_by = "date"
 +++
 
 Software Engineer building data infrastructure at [Clever Cloud](https://www.clever-cloud.com). I've built and operated a variety of stateful distributed systems throughout my career.

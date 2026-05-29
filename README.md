@@ -2,7 +2,8 @@
 
 A [Zola](https://www.getzola.org) theme that looks like an **architect's drawing
 sheet** but breathes like a **terminal**: a command-history nav, a page-aware quorum-read
-console with a blinking cursor, a fixed status bar, and a hidden disk-failure easter egg.
+console with a blinking cursor, a fixed status bar, and a switchable **read mode** that
+lets a single-replica read expose the corruption a quorum read silently heals.
 Two color themes — `blueprint` (ink on warm paper, light) and `cyanotype` (the negative:
 cyan on navy, dark).
 
@@ -15,23 +16,36 @@ reserved for failure states. Zero CDN — the font is self-hosted.
 
 - Two color themes with a JS toggle that **persists** (`localStorage`) and respects
   `prefers-color-scheme` on first load — no flash of the wrong theme.
-- **Hidden disk-failure easter egg** (👾 button by the theme toggle, or click the cluster
-  block): simulates a failing data disk. Content is re-served from corrupted blocks —
-  words are scrambled with **typoglycemia** (first & last letter kept, middle shuffled, so
-  it stays readable), the console reports a `✗ … checksum mismatch`, the failed replica
-  goes red, and the status bar drops to `disk: read errors`. **Re-rolls on every reload**;
-  trigger again to heal. Independent from the color toggle.
-- **Page-aware quorum-read console**: each page echoes `./read --quorum <its path>` with
-  real counts; the serving replica is picked at random per load and highlighted.
+- **Switchable read mode** (`read: quorum ⇄ read: single` button by the theme toggle, or
+  click the cluster). The cluster always has one silently-faulty replica, rolled per load:
+  - **quorum (R=2, default):** reads a majority. When the faulty replica is one of the two
+    read, it's out-voted and **read-repaired** (`✓ … nX corrupted → read-repaired`, that node
+    shown amber); otherwise `✓ … checksums match`. Content is always clean.
+  - **single (R=1):** reads one replica. When it lands on the faulty one you get **corrupted
+    blocks** — words scrambled with **typoglycemia** (first & last letter kept, so it stays
+    readable), the node goes red, `✗ … checksum mismatch`, the badge degrades to `unverified`.
+    Most pages still read fine — that gamble is the point. Re-rolls on reload; mode persists.
+- **Page-aware quorum-read console**: each page echoes `./read --quorum <its path>` (or
+  `--replica nX` in single mode) with real counts; the serving replica(s) are highlighted.
 - **Deterministic seed** per post, derived from its slug (stable hex like `0x4f2a91e`),
-  shown in the post list and article meta.
+  shown in the post list.
 - Footer **vector clock** `[deploy:N, edit:M, rev:X]` derived from build metadata.
-- Numbered **table of contents** (`1.0 … N.0`) from `page.toc`, clickable heading
-  anchors.
+- **Nested table of contents** (hierarchically numbered `1`, `1.1`, `1.1.1`, up to 4
+  levels deep) from `page.toc`, clickable heading anchors. Hide it per page with
+  `extra.hide_table_of_contents = true`.
 - Dual syntax-highlighting stylesheets (light + dark) switched with the theme.
+- **SEO out of the box**: OpenGraph + Twitter cards, per-page `rel=canonical` (with an
+  `extra.canonical` override for syndicated posts), `author` and `theme-color` meta, an
+  SVG favicon + web manifest, and an optional Plausible analytics hook.
+- **Standalone pages** (about / talks / contact …) render without article furniture — no
+  date/reading-time/tags meta-row, breadcrumb is `~ / <slug>`.
+- A themed **404 page**: a failed quorum read — the key isn't on any replica.
+- **`mermaid` and `youtube` shortcodes** (Mermaid is vendored & lazy-loaded — no CDN,
+  fetched only on pages that use it, and it re-renders on the color-theme toggle).
 - RSS + Atom feeds, sitemap, tag taxonomy with its own index, optional client-side
   search (self-hosted elasticlunr), self-hosted JetBrains Mono.
-- Responsive: the footer cartouche folds, the nav collapses, the BOM stacks at narrow widths.
+- Responsive: the footer cartouche folds, the nav **wraps onto its own row** (still
+  reachable on phones), wide tables scroll, and the BOM stacks at narrow widths.
 
 ## Requirements
 
@@ -85,48 +99,52 @@ what you want to override into your site's `[extra]`.
 ### Console strip (the terminal client)
 
 The console is the client reading from the cluster, and the command **matches the current
-page** — a quorum read against its path:
+page** — a read against its path. The exact line is driven client-side by the read mode (see
+below); the server-rendered default is a quorum read:
 
-| Page | Console command | Output |
+| Page | Console command | Output (quorum) |
 |------|-----------------|--------|
 | home | `./read --quorum home` | `✓ quorum 2/3 · N documents · committed` |
 | `/posts` | `./read --quorum posts` | `✓ quorum 2/3 · N documents · committed` |
-| a post | `./read --quorum posts/<slug>` | `✓ quorum 2/3 · served by node-N` |
+| a post | `./read --quorum posts/<slug>` | `✓ quorum read R=2 · nodes nA,nB · checksums match` |
 | `/tags` | `./read --quorum tags` | `✓ quorum 2/3 · N tags · committed` |
 | a tag | `./read --quorum tags/<slug>` | `✓ quorum 2/3 · N documents · committed` |
 
-On a post the serving node is chosen at random on every refresh (and highlighted in the
-schematic), so the read lands on a different replica each time. The 3-node cluster
-schematic (0-indexed: `node-0`–`node-2`) is drawn in this strip.
+The 3-node cluster schematic (0-indexed: `n0`–`n2`) is drawn in this strip; the serving
+replica(s) are highlighted (see read modes).
 
 | Key | Default | Description |
 |-----|---------|-------------|
 | `prompt_user` | `user@host` | Text before the `:` |
 | `prompt_path` | `~/blog` | Path after the `:` |
-| `read_replica` | `node-0` | Server-side default node (randomized client-side per load) |
+| `read_replica` | `node-0` | No-JS fallback label for the serving replica |
 | `cluster_enabled` | `true` | Show the 3-node cluster schematic in the console |
 
-The `N` counts are real (from the section/taxonomy being viewed). The per-post
-consistency level shown in the article meta comes from `page.extra.consistency`
-(falling back to `extra.default_consistency`); the post's deterministic seed is shown in
-that meta row too (not in the console).
+The `N` counts are real (from the section/taxonomy being viewed). A post's meta row shows
+its date, reading time, and tags.
 
-### Fault injection (disk failure) — a hidden easter egg
+### Read modes (quorum R=2 ⇄ single R=1)
 
-There is no labelled control. Two triggers arm the same disk failure:
+The cluster has one silently-faulty replica, **rolled at random on each page load**. The
+`read: quorum`/`read: single` button (next to the color-theme toggle) — or **clicking the
+cluster block** — switches how the page is read; the mode persists in `localStorage`.
 
-- the **👾 button** next to the color-theme toggle in the nav, and
-- **clicking the cluster block** in the console (the quorum) — the replica being read fails.
-
-Either one re-serves the page from corrupted blocks: words are scrambled with
-typoglycemia on **every page** (hero, post list, article bodies — never the terminal
-chrome), the failed replica goes red, the console reports `✗ … checksum mismatch`, and the
-status bar drops to `disk: read errors`. It persists + re-rolls on reload; trigger again to
-heal.
+- **quorum (R=2):** reads two replicas. If the faulty one is among them it's out-voted and
+  **read-repaired** — `✓ quorum read R=2 · nodes nA,nB · nX corrupted → read-repaired`, with
+  that node drawn amber; otherwise `✓ … checksums match`. The content served is always clean.
+- **single (R=1):** reads one replica, with no majority to cross-check it. If that replica
+  is the faulty one, you get the **real corruption**: words scrambled with typoglycemia
+  across the page (hero, post list, article
+  bodies — never the terminal chrome or code blocks), the node goes red, `✗ … checksum
+  mismatch`, the status bar drops to `nodes: 2/3 · 1 corrupt`. **Most reads land on a healthy
+  replica and look fine** — reload to re-roll. (Honors `prefers-reduced-motion`: indicators
+  still flip, text isn't scrambled.)
 
 | Key | Default | Description |
 |-----|---------|-------------|
-| `chaos_enabled` | `true` | Arm the disk-failure easter egg (👾 button + clickable cluster) |
+| `read_modes` | `true` | Show the read-mode toggle + the faulty-replica/single-read reveal. `false` = a plain healthy quorum, no toggle |
+| `default_read_mode` | `quorum` | Initial mode: `quorum` or `single` |
+| `logo` | `config.title` | Brand text in the top-left of the nav |
 
 ### Hero (home page)
 
@@ -152,16 +170,53 @@ dimline_end = "2026 · 6 yrs"
 
 ### Article
 
+The post meta row shows the date, reading time, and tags.
+
 | Key | Default | Description |
 |-----|---------|-------------|
-| `default_consistency` | `linearizable` | Fallback for the consistency badge |
-| `clock_rev` | `A` | The `rev:` field of the footer vector clock + breadcrumb |
+| `clock_rev` | `A` | The `rev:` field of the footer vector clock |
 
-Per-post, set the consistency badge in the page front-matter:
+Per-post front-matter `[extra]` keys the theme reads:
+
+| Key | Description |
+|-----|-------------|
+| `canonical` | Emit a `rel=canonical` (and `og:url`) pointing elsewhere — for syndicated/cross-posted articles |
+| `image` | Per-page OpenGraph/Twitter card image (overrides `extra.og_image`) |
+| `hide_table_of_contents` | `true` → suppress the TOC on this page |
 
 ```toml
 [extra]
-consistency = "eventually-consistent"
+hide_table_of_contents = true
+```
+
+### Standalone pages (non-posts)
+
+Any page **outside** the `posts/` section (e.g. `about.md`, `talks.md`, `contact.md`)
+renders through the same `page.html` but drops the article furniture: no
+date/reading-time/tags meta-row, and the breadcrumb is `~ / <slug>` instead of
+`~ / blog / <slug>`. Nothing to configure — it's detected from the page path.
+
+### SEO, social cards & favicon
+
+| Key | Default | Description |
+|-----|---------|-------------|
+| `og_image` | – | Path under `static/` (or a full `https` URL) for OpenGraph/Twitter cards when a page sets no `extra.image` |
+| `theme_color` | `#15324d` | `<meta name="theme-color">` (mobile browser chrome) |
+
+The theme emits `og:*` / `twitter:*` tags, `rel=canonical`, and `<meta name="author">`
+(from the top-level `author`). It ships `static/favicon.svg` + `static/site.webmanifest`;
+drop your own `favicon.ico` / `apple-touch-icon.png` / PNG set into `static/` and add the
+matching `<link>`s in `templates/partials/favicon.html` for full legacy/PWA coverage.
+
+### Analytics (optional)
+
+Add an `[extra.plausible]` block to inject a [Plausible](https://plausible.io) script;
+omit it entirely to disable. The theme is otherwise analytics-free.
+
+```toml
+[extra.plausible]
+domain = "example.com"
+src    = "https://plausible.io/js/script.js"   # optional; this is the default
 ```
 
 ### Status bar
@@ -226,6 +281,29 @@ If the scheduler is deterministic, every flake becomes a fixture.
 {%/* end */%}
 ```
 
+### `mermaid()`
+
+A [Mermaid](https://mermaid.js.org) diagram. The library is **vendored** (no CDN) and
+lazy-loaded only on pages that contain a diagram; it picks up the active color theme and
+re-renders when you toggle light/dark.
+
+```
+{%/* mermaid() */%}
+flowchart LR
+  A[seed] --> B{linearizable?}
+  B -->|no| C[shrink]
+  B -->|yes| D[commit]
+{%/* end */%}
+```
+
+### `youtube(id, title?, autoplay?, class?)`
+
+A responsive 16:9 privacy-friendly (`youtube-nocookie`) embed.
+
+```
+{{/* youtube(id="dQw4w9WgXcQ") */}}
+```
+
 ## How the signature bits work
 
 - **Seed** — Zola has no string-hashing function, so the theme computes a deterministic
@@ -236,10 +314,10 @@ If the scheduler is deterministic, every flake becomes a fixture.
 
 ## Known limitations / choices
 
-- **Heading numbers in prose**: the reference mock shows `1.0` glued to each prose
+- **Heading numbers in prose**: the reference mock shows numbers glued to each prose
   heading. Zola renders Markdown headings without a hook to inject numbers, so the theme
-  numbers the **TOC** instead and relies on clickable anchors. The TOC is the
-  source of truth for section numbering.
+  numbers the **TOC** instead (hierarchically: `1`, `1.1`, `1.1.1`) and relies on clickable
+  anchors. The TOC is the source of truth for section numbering.
 - **Syntax CSS filenames** are fixed by Zola (`giallo-light.css` / `giallo-dark.css`).
 - **Search** is opt-in and intentionally minimal (title + excerpt, top 8 results).
 - The dark theme is switched via the toggle (and `prefers-color-scheme` on first load),

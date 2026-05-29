@@ -56,26 +56,45 @@ include_content = true
 # ==========================================================================
 [extra]
 
+# Brand shown in the top-left of the nav. Falls back to `title` if unset (which
+# may be long — set a short brand here).
+logo = "Pierre Zemb"
+
 # --- Console strip (the terminal client: prompt + distributed read log) ---
 prompt_user   = "root@pierrezemb.fr"
 prompt_path   = "~/blog"
-# The replica a healthy post read is "served from", echoed in the console.
+# No-JS fallback label for the replica a read is "served from" (read.js drives the
+# live read state once JS loads).
 read_replica  = "node-0"
 
 # --- Cluster schematic (3 nodes drawn in the console = the replica set) ---
 cluster_enabled = true
 
-# --- Fault injection: disk failure (hidden easter egg; nothing moves without a click) ---
-# Triggers: the 👾 button by the theme toggle, or clicking a node in the cluster.
-chaos_enabled = true
+# --- Read modes (quorum R=2 ⇄ single R=1) ---
+# The cluster always has one silently-faulty replica. A quorum read out-votes and
+# read-repairs it (clean, checksums match); a single read lands on it and serves
+# corrupted blocks (typoglycemia, checksum mismatch). The `read: quorum` button by
+# the theme toggle (and clicking the cluster) switches modes. Set false to disable
+# the toggle + the fault entirely (a plain healthy quorum).
+read_modes        = true
+default_read_mode = "quorum"        # initial mode: "quorum" or "single"
 
 # --- Hero specs + dimension line (optional theme features; left off here) ---
 # specs = [{ label = "domain", value = "distributed systems" }, ...]
 # dimline_start = "2019"
 # dimline_end   = "2026 · 6 yrs"
 
-# --- Article defaults ---
-default_consistency = "linearizable"
+# --- SEO / social cards ---
+# og_image: path under static/ (or a full https URL) used for OpenGraph/Twitter
+# cards when a page sets no [extra].image of its own. Left unset in the demo.
+# og_image = "og.png"
+# theme_color: the mobile browser-chrome color (<meta name="theme-color">).
+theme_color = "#15324d"
+
+# --- Analytics (optional; omit the block entirely to disable) ---
+# [extra.plausible]
+# domain = "example.com"
+# src    = "https://plausible.io/js/script.js"
 
 # --- Status bar (fixed, tmux/htop style) ---
 status_online = "● online"
@@ -96,6 +115,9 @@ url = "$BASE_URL/posts/"
 [[extra.nav]]
 name = "tags"
 url = "$BASE_URL/tags/"
+[[extra.nav]]
+name = "about"
+url = "$BASE_URL/about/"
 
 [[extra.social]]
 name = "github"

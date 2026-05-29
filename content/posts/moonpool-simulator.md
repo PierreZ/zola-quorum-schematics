@@ -5,9 +5,6 @@ description = "A hobby-grade deterministic simulation testing framework in Rust,
 
 [taxonomies]
 tags = ["rust", "dst", "foundationdb"]
-
-[extra]
-consistency = "linearizable"
 +++
 
 `moonpool` is my attempt to fit FoundationDB's simulation philosophy into a single,
@@ -27,10 +24,41 @@ cluster.run_until_quiescent();
 assert!(cluster.linearizable());
 ```
 
+One seed drives every source of nondeterminism, and the same seed always replays the
+same history:
+
+{% mermaid() %}
+flowchart LR
+  RNG[seeded RNG] --> SCHED[scheduler]
+  SCHED --> NET[network reorder]
+  SCHED --> DISK[disk latency]
+  SCHED --> CLK[clock skew]
+  NET --> CHECK{linearizable?}
+  DISK --> CHECK
+  CLK --> CHECK
+  CHECK -->|no| SHRINK[shrink seed]
+  CHECK -->|yes| PASS[commit]
+{% end %}
+
 ## What it caught
 
 The first non-trivial bug it found was a lost acknowledgement under a heal-then-elect
 sequence — invisible in unit tests, obvious once the scheduler was allowed to be cruel.
+
+### Lost acknowledgements
+
+A follower acked an append, then the leader stepped down before the commit index
+advanced. The client saw success; the cluster disagreed.
+
+#### Reproduction
+
+Seed `0xC0FFEE` replays it in under a millisecond — heal the partition, force an
+election within the same tick, and the ack races the term change.
+
+### Clock skew
+
+Skewing one node's clock past the election timeout surfaced a second, unrelated split
+vote that only a deterministic clock could have caught reliably.
 
 ## Where it goes next
 

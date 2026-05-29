@@ -5,9 +5,6 @@ description = "A bug the simulator found that neither humans nor agents anticipa
 
 [taxonomies]
 tags = ["consensus", "raft", "bugs"]
-
-[extra]
-consistency = "eventually-consistent"
 +++
 
 Two leaders, same term, both certain they had won. The simulator produced it in seconds;

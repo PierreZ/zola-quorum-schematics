@@ -21,19 +21,24 @@ repo = "https://github.com/PierreZ/zola-quorum-schematics"
 # Copy the matching keys into your own site's [extra]. See README.md.
 # ---------------------------------------------------------------------------
 [extra]
+logo = "Pierre Zemb"                          # nav brand (falls back to config.title)
 prompt_user = "root@pierrezemb.fr"           # console: user@host before the $
 prompt_path = "~/blog"                       # console: path after the colon
-read_replica = "node-0"                      # console: replica a healthy post read serves from
+read_replica = "node-0"                      # no-JS fallback label for the serving replica
 cluster_enabled = true                       # show the 3-node cluster schematic in the console
-chaos_enabled = true                         # arm the disk-failure easter egg (👾 button + clickable cluster)
+read_modes = true                            # read-mode toggle: quorum R=2 ⇄ single R=1 (the corrupted-replica reveal)
+default_read_mode = "quorum"                  # initial read mode: "quorum" or "single"
 dimline_start = "2019"                        # hero dimension line, left end
 dimline_end = "2026 · 6 yrs"                  # hero dimension line, right end
-default_consistency = "linearizable"          # fallback for page.extra.consistency
 status_online = "● online"                    # status bar, left label
 status_uptime = "uptime: 6y"                  # status bar, uptime label
 copyright = "© 2026 Pierre Zemb · built deterministically"
 clock_rev = "A"                               # vector clock: rev: field
+theme_color = "#15324d"                       # <meta name=theme-color>
+# og_image = "og.png"                         # default OpenGraph/Twitter card image (static/ path or https URL)
 # specs = [{label, value}, ...]               # hero spec cells
 # nav = [{name, url}, ...]                     # top navigation links
 # social = [{name, url}, ...]                  # footer social links
 # [extra.search] enabled = true               # client-side search box
+# [extra.plausible] domain = "example.com"    # optional Plausible analytics (omit to disable)
+# Per-page front-matter [extra]: canonical, image, hide_table_of_contents
