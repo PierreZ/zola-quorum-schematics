@@ -9,5 +9,11 @@
       <a href="{{ config.base_url | safe }}">home</a><a href="{{ get_url(path='@/posts/_index.md') | safe }}">blog</a><a href="{{ get_url(path='tags') | safe }}">tags</a>
     {%- endif %}
   </nav>
+  {%- if config.extra.search.enabled | default(value=false) %}
+  <div class="nav-search">
+    <input type="search" id="search" placeholder="search…" autocomplete="off" aria-label="search posts">
+    <div class="search-results" id="search-results"></div>
+  </div>
+  {%- endif %}
   <button class="flip" id="flipbtn" type="button" aria-label="toggle color theme">⊕ cyanotype</button>
 </div>

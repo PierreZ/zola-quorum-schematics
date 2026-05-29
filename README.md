@@ -15,16 +15,17 @@ reserved for failure states. Zero CDN — the font is self-hosted.
 
 - Two color themes with a JS toggle that **persists** (`localStorage`) and respects
   `prefers-color-scheme` on first load — no flash of the wrong theme.
-- **Opt-in disk-failure toggle**: simulates a failing data disk. The article is re-served
-  from corrupted blocks — a handful of words are scrambled with **typoglycemia** (first &
+- **Opt-in disk-failure toggle**: simulates a failing data disk. Content across the page
+  is re-served from corrupted blocks — words are scrambled with **typoglycemia** (first &
   last letter kept, middle shuffled, so it stays readable), the console reports a
-  `✗ read error`, node-3 of the cluster goes red, and the status bar drops to
-  `disk: read errors`. The corruption **re-rolls on every reload**; *heal disk* restores
-  the original exactly. Nothing moves until you click. Independent from the color toggle.
+  `✗ … checksum mismatch`, the replica being read goes red in the cluster, and the status
+  bar drops to `disk: read errors`. The corruption **re-rolls on every reload**;
+  *heal disk* restores the original exactly. Independent from the color toggle.
+- **Page-aware quorum-read console**: each page echoes `./read --quorum <its path>` with
+  real counts; the serving replica is picked at random per load and highlighted.
 - **Deterministic seed** per post, derived from its slug (stable hex like `0x4f2a91e`),
   shown in the post list and article meta.
-- **Build log** that reflects the real number of posts; footer **vector clock**
-  `[deploy:N, edit:M, rev:X]` derived from build metadata.
+- Footer **vector clock** `[deploy:N, edit:M, rev:X]` derived from build metadata.
 - Numbered **table of contents** (`1.0 … N.0`) from `page.toc`, clickable heading
   anchors.
 - Dual syntax-highlighting stylesheets (light + dark) switched with the theme.
@@ -83,25 +84,32 @@ what you want to override into your site's `[extra]`.
 
 ### Console strip (the terminal client)
 
-The console is the client reading from the cluster. On the home and section pages it
-echoes the build line; on a **post** it echoes a **quorum read** for the document:
-`read --quorum posts/<slug>` → `✓ quorum 2/3 · served by <node> · seed <0x…>` (the
-index pages show `… · N documents · committed`). The serving node is chosen at random on
-every refresh (and highlighted in the schematic), so the read lands on a different
-replica each time. The 3-node cluster schematic (0-indexed: `node-0`–`node-2`) is drawn
-in this strip.
+The console is the client reading from the cluster, and the command **matches the current
+page** — a quorum read against its path:
+
+| Page | Console command | Output |
+|------|-----------------|--------|
+| home | `./read --quorum home` | `✓ quorum 2/3 · N documents · committed` |
+| `/posts` | `./read --quorum posts` | `✓ quorum 2/3 · N documents · committed` |
+| a post | `./read --quorum posts/<slug>` | `✓ quorum 2/3 · served by node-N` |
+| `/tags` | `./read --quorum tags` | `✓ quorum 2/3 · N tags · committed` |
+| a tag | `./read --quorum tags/<slug>` | `✓ quorum 2/3 · N documents · committed` |
+
+On a post the serving node is chosen at random on every refresh (and highlighted in the
+schematic), so the read lands on a different replica each time. The 3-node cluster
+schematic (0-indexed: `node-0`–`node-2`) is drawn in this strip.
 
 | Key | Default | Description |
 |-----|---------|-------------|
 | `prompt_user` | `user@host` | Text before the `:` |
 | `prompt_path` | `~/blog` | Path after the `:` |
-| `build_command` | `./build --deterministic` | Command echoed on index/section pages |
 | `read_replica` | `node-0` | Server-side default node (randomized client-side per load) |
 | `cluster_enabled` | `true` | Show the 3-node cluster schematic in the console |
 
-The output line `✓ N posts compiled` always uses the **real** post count from
-`content/posts/`. The per-post consistency level shown in the article meta comes from
-`page.extra.consistency` (falling back to `extra.default_consistency`).
+The `N` counts are real (from the section/taxonomy being viewed). The per-post
+consistency level shown in the article meta comes from `page.extra.consistency`
+(falling back to `extra.default_consistency`); the post's deterministic seed is shown in
+that meta row too (not in the console).
 
 ### Fault injection (disk failure)
 
@@ -183,7 +191,7 @@ url = "https://github.com/you"
 
 | Key | Default | Description |
 |-----|---------|-------------|
-| `[extra.search] enabled` | `false` | Show a client-side search box under the nav |
+| `[extra.search] enabled` | `false` | Show a client-side search box in the nav bar (results drop down) |
 
 Requires `build_search_index = true`. The theme ships a vendored
 `static/js/elasticlunr.min.js` (no CDN) and a minimal `search.js`.

@@ -259,15 +259,18 @@ body.chaos .cluster .node.active { stroke: var(--red); fill: var(--red); }
    still readable (first/last letter intact), but marked as corrupted */
 .rot { text-decoration: underline dotted var(--red); text-decoration-thickness: 1px; text-underline-offset: 3px; }
 
-/* ---- SEARCH (optional) ---- */
-.search-box { padding: .6rem 1.6rem; border-bottom: 1px dashed var(--grid-bold); }
-.search-box input { width: 100%; background: var(--paper-2); border: 1px solid var(--grid-bold); color: var(--ink); font-family: inherit; font-size: .8rem; padding: .35rem .6rem; }
-.search-box input:focus { outline: none; border-color: var(--cyan); }
-.search-results { padding: 0 1.6rem; }
-.search-results:not(:empty) { padding: .6rem 1.6rem; border-bottom: 1px dashed var(--grid-bold); }
-.search-results .sr { padding: .4rem 0; border-bottom: 1px dotted var(--grid-bold); font-size: .85rem; }
+/* ---- SEARCH (optional, lives in the nav) ---- */
+.nav-search { position: relative; }
+.nav-search input { background: var(--paper-2); border: 1px solid var(--grid-bold); color: var(--ink); font-family: inherit; font-size: .74rem; padding: .2rem .5rem; width: 8.5rem; transition: width .15s ease, border-color .15s ease; }
+.nav-search input::placeholder { color: var(--ink-faint); }
+.nav-search input:focus { outline: none; border-color: var(--cyan); width: 12rem; }
+.search-results { position: absolute; top: calc(100% + .35rem); right: 0; width: min(22rem, 78vw); max-height: 60vh; overflow-y: auto; background: var(--paper); border: 1px solid var(--ink); z-index: 20; }
+.search-results:empty { display: none; }
+.search-results .sr { padding: .45rem .7rem; border-bottom: 1px dotted var(--grid-bold); font-size: .82rem; }
 .search-results .sr:last-child { border-bottom: none; }
-.search-results .sr .ex { color: var(--ink-dim); font-size: .76rem; }
+.search-results .sr a { color: var(--ink); font-weight: 600; }
+.search-results .sr a:hover { color: var(--cyan); text-decoration: none; }
+.search-results .sr .ex { color: var(--ink-dim); font-size: .72rem; margin-top: .15rem; }
 
 /* ---- STATUS BAR (terminal) ---- */
 .statusbar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 6; background: var(--status-bg); color: var(--status-fg); font-size: .72rem; height: 1.6rem; display: flex; align-items: center; }

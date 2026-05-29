@@ -38,20 +38,33 @@
 <body>
 {%- set bp_posts = get_section(path="posts/_index.md") -%}
 {%- set post_count = bp_posts.pages | length -%}
-{#- On a post page, precompute the distributed-read console vars (base.html can call
-    macros directly; an included partial cannot — see CLAUDE.md). -#}
-{%- set bp_is_post = false -%}
+{#- Page-aware console "read --quorum <target>" command. base.html can call macros and
+    see page/section/taxonomy/term directly; an included partial cannot (see CLAUDE.md),
+    so we compute here and the console.html include consumes these vars. -#}
+{%- set bp_kind = "list" -%}
+{%- set bp_noun = "document" -%}
+{%- set bp_count = post_count -%}
+{%- set bp_target = "home" -%}
 {%- if page and page.slug -%}
-  {%- set bp_is_post = true -%}
-  {%- set bp_seed = m::seed(slug=page.slug) | trim -%}
+  {%- set bp_kind = "doc" -%}
+  {%- set bp_target = page.components | join(sep="/") -%}
   {%- set bp_replica = config.extra.read_replica | default(value="node-0") -%}
+{%- elif term -%}
+  {%- set bp_target = taxonomy.name ~ "/" ~ term.slug -%}
+  {%- set bp_count = term.pages | length -%}
+{%- elif terms -%}
+  {%- set bp_target = taxonomy.name -%}
+  {%- set bp_count = terms | length -%}
+  {%- set bp_noun = "tag" -%}
+{%- elif section and section.components | length > 0 -%}
+  {%- set bp_target = section.components | join(sep="/") -%}
+  {%- set bp_count = section.pages | length -%}
 {%- endif -%}
 
 <div class="sheet">
   {% include "partials/nav.html" %}
   {% include "partials/console.html" %}
   {% if config.extra.chaos_enabled | default(value=true) %}{% include "partials/chaos.html" %}{% endif %}
-  {% if config.extra.search.enabled | default(value=false) %}{% include "partials/search.html" %}{% endif %}
 
   {% block content %}{% endblock content %}
 

@@ -59,7 +59,6 @@ include_content = true
 # --- Console strip (the terminal client: prompt + distributed read log) ---
 prompt_user   = "root@pierrezemb.fr"
 prompt_path   = "~/blog"
-build_command = "read --quorum ./posts"
 # The replica a healthy post read is "served from", echoed in the console.
 read_replica  = "node-0"
 

@@ -16,9 +16,10 @@
   function render(results) {
     if (!results.length) { out.innerHTML = ""; return; }
     out.innerHTML = results.slice(0, 8).map(function (r) {
-      var d = r.doc;
+      // elasticlunr returns {ref, score}; fetch the stored document by ref.
+      var d = index.documentStore.getDoc(r.ref) || {};
       var ex = (d.description || d.body || "").slice(0, 120);
-      return '<div class="sr"><a href="' + d.id + '">' + escapeHtml(d.title) +
+      return '<div class="sr"><a href="' + r.ref + '">' + escapeHtml(d.title || r.ref) +
              '</a><div class="ex">' + escapeHtml(ex) + '</div></div>';
     }).join("");
   }
