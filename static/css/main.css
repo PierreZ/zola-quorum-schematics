@@ -175,7 +175,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .toc ol ol li { border-bottom: none; padding: .2rem 0; font-size: .82rem; }
 
 /* ---- PROSE (markdown body) ---- */
-.prose p { margin-bottom: 1.15rem; max-width: 70ch; }
+.prose p { margin-bottom: 1.15rem; }
 .prose h1, .prose h2, .prose h3, .prose h4, .prose h5, .prose h6 { letter-spacing: -.01em; position: relative; }
 .prose h1 { font-size: 1.6rem; margin: 2.4rem 0 .9rem; font-weight: 800; }
 .prose h2 { font-size: 1.35rem; margin: 2.2rem 0 .8rem; }
@@ -191,7 +191,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .prose .footnote-definition { display: flex; gap: .6rem; font-size: .82rem; color: var(--ink-dim); margin-top: .6rem; }
 .prose .footnote-definition p { margin-bottom: .3rem; }
 .prose sup.footnote-reference a { color: var(--cyan); }
-.prose ul, .prose ol { max-width: 70ch; margin: 0 0 1.15rem 1.4rem; }
+.prose ul, .prose ol { margin: 0 0 1.15rem 1.4rem; }
 .prose li { margin-bottom: .35rem; }
 .prose img { max-width: 100%; height: auto; border: 1px solid var(--grid-bold); }
 .prose hr { border: none; border-top: 1px dashed var(--grid-bold); margin: 2rem 0; }
