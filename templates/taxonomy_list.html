@@ -4,7 +4,7 @@
 {% block description %}Index of {{ taxonomy.name }}.{% endblock description %}
 
 {% block content %}
-<div class="sec-head">ls ./{{ taxonomy.name }} <span class="ref">ref. /{{ taxonomy.name }}</span></div>
+<div class="sec-head">ls ./{{ taxonomy.name }}</div>
 <div class="bom">
   {%- for term in terms %}
   <div class="row">

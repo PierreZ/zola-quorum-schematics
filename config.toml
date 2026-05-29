@@ -65,9 +65,9 @@ read_replica  = "node-0"
 # --- Cluster schematic (3 nodes drawn in the console = the replica set) ---
 cluster_enabled = true
 
-# --- Fault injection: disk failure (opt-in; nothing moves without a click) ---
+# --- Fault injection: disk failure (hidden easter egg; nothing moves without a click) ---
+# Triggers: the 👾 button by the theme toggle, or clicking a node in the cluster.
 chaos_enabled = true
-# chaos_hint  = "…"   # optional text on the right of the fault bar (default: none)
 
 # --- Hero specs + dimension line (optional theme features; left off here) ---
 # specs = [{ label = "domain", value = "distributed systems" }, ...]

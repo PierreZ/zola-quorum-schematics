@@ -111,11 +111,10 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .console .ok { color: var(--cyan); }
 .console .warn { color: var(--red); }
 .console .out { color: var(--ink-dim); }
-.console .cluster-cell { flex: none; display: flex; align-items: center; padding-left: .9rem; border-left: 1px solid var(--grid-bold); }
+.console .cluster-cell { flex: none; display: flex; align-items: center; padding: .35rem .9rem; border-left: 1px solid var(--grid-bold); }
 
 /* ---- HERO ---- */
 .hero { padding: 2.2rem 1.6rem; border-bottom: 1px dashed var(--grid-bold); position: relative; }
-.hero .fig { position: absolute; top: 1rem; right: 1.2rem; font-size: .68rem; color: var(--ink-faint); letter-spacing: .08em; }
 .hero h1 { font-size: clamp(1.7rem, 4.5vw, 2.5rem); letter-spacing: -.02em; line-height: 1.12; margin-bottom: 1rem; font-weight: 800; }
 .hero h1 .u { text-decoration: underline; text-decoration-color: var(--cyan); text-underline-offset: 6px; text-decoration-thickness: 2px; }
 .hero p { color: var(--ink-dim); margin-bottom: .6rem; font-size: .94rem; }
@@ -134,7 +133,6 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 /* ---- SECTION HEAD ---- */
 .sec-head { display: flex; align-items: center; gap: .8rem; padding: 1.3rem 1.6rem .4rem; font-size: .72rem; text-transform: uppercase; letter-spacing: .14em; color: var(--ink-dim); }
 .sec-head::before { content: "$"; color: var(--cyan); font-weight: 700; }
-.sec-head .ref { margin-left: auto; color: var(--ink-faint); }
 
 /* ---- BOM / POST LIST ---- */
 .bom { padding: 0 1.6rem 1.2rem; }
@@ -232,9 +230,14 @@ code.inline, .prose p > code, .prose li > code { background: var(--paper-2); bor
 /* ---- CLUSTER SCHEMATIC (in the console = the replica set) ---- */
 /* The node currently being read from (chosen by render.js) is .active. */
 .cluster { display: block; }
-.cluster .node { stroke: var(--ink-dim); fill: var(--paper); stroke-width: 1.2; }
+.cluster .node { stroke: var(--ink-dim); fill: var(--paper); stroke-width: 1.2; transition: stroke-width .12s ease; }
 .cluster .node.active { stroke: var(--cyan); fill: var(--cyan); }
+.cluster .node.failed { stroke: var(--red); fill: var(--red); }
 .cluster .link { stroke: var(--grid-bold); stroke-width: 1; }
+/* the whole cluster block is one big click target when fault injection is armed */
+.fault-armed .cluster-cell { cursor: pointer; }
+.fault-armed .cluster-cell:hover { background: var(--paper); }
+.fault-armed .cluster-cell:hover .node { stroke-width: 1.8; }
 
 /* ---- CONSISTENCY BADGE (article meta) ---- */
 .meta-row { display: flex; flex-wrap: wrap; gap: 0; border: 1px solid var(--grid-bold); margin-bottom: 1.4rem; font-size: .72rem; }
@@ -247,13 +250,12 @@ code.inline, .prose p > code, .prose li > code { background: var(--paper-2); bor
 .vclock { color: var(--ink-faint); font-size: .68rem; margin-top: .25rem; }
 .vclock b { color: var(--cyan); font-weight: 600; }
 
-/* ---- FAULT INJECTION (disk failure) ---- */
-.chaos-bar { display: flex; align-items: center; gap: .8rem; padding: .5rem 1.6rem; border-bottom: 1px dashed var(--grid-bold); font-size: .74rem; color: var(--ink-dim); }
-.chaos-btn { background: none; border: 1px solid var(--grid-bold); color: var(--ink-dim); font-family: inherit; font-size: .72rem; cursor: pointer; padding: .2rem .6rem; }
-.chaos-btn:hover { border-color: var(--red); color: var(--red); }
-body.chaos .chaos-btn { border-color: var(--red); color: var(--red); }
-/* the replica you are reading from is the disk that fails */
-body.chaos .cluster .node.active { stroke: var(--red); fill: var(--red); }
+/* ---- FAULT INJECTION (disk failure) — hidden easter egg ---- */
+/* the 👾 button next to the theme toggle: greyscale at rest, comes alive on
+   hover, glows red while a disk is failed */
+.invader { background: none; border: 1px solid transparent; font-family: inherit; font-size: 1rem; line-height: 1; cursor: pointer; padding: .1rem .35rem; filter: grayscale(1); opacity: .7; transition: filter .15s ease, opacity .15s ease, border-color .15s ease; }
+.invader:hover { filter: none; opacity: 1; border-color: var(--cyan); }
+.invader.active { filter: none; opacity: 1; border-color: var(--red); }
 
 /* typoglycemia artifacts injected into the content by a failing disk:
    still readable (first/last letter intact), but marked as corrupted */

@@ -15,12 +15,12 @@ reserved for failure states. Zero CDN — the font is self-hosted.
 
 - Two color themes with a JS toggle that **persists** (`localStorage`) and respects
   `prefers-color-scheme` on first load — no flash of the wrong theme.
-- **Opt-in disk-failure toggle**: simulates a failing data disk. Content across the page
-  is re-served from corrupted blocks — words are scrambled with **typoglycemia** (first &
-  last letter kept, middle shuffled, so it stays readable), the console reports a
-  `✗ … checksum mismatch`, the replica being read goes red in the cluster, and the status
-  bar drops to `disk: read errors`. The corruption **re-rolls on every reload**;
-  *heal disk* restores the original exactly. Independent from the color toggle.
+- **Hidden disk-failure easter egg** (👾 button by the theme toggle, or click a node in
+  the cluster): simulates a failing data disk. Content is re-served from corrupted blocks —
+  words are scrambled with **typoglycemia** (first & last letter kept, middle shuffled, so
+  it stays readable), the console reports a `✗ … checksum mismatch`, the failed replica
+  goes red, and the status bar drops to `disk: read errors`. **Re-rolls on every reload**;
+  trigger again to heal. Independent from the color toggle.
 - **Page-aware quorum-read console**: each page echoes `./read --quorum <its path>` with
   real counts; the serving replica is picked at random per load and highlighted.
 - **Deterministic seed** per post, derived from its slug (stable hex like `0x4f2a91e`),
@@ -111,15 +111,22 @@ consistency level shown in the article meta comes from `page.extra.consistency`
 (falling back to `extra.default_consistency`); the post's deterministic seed is shown in
 that meta row too (not in the console).
 
-### Fault injection (disk failure)
+### Fault injection (disk failure) — a hidden easter egg
+
+There is no labelled control. Two triggers arm the same disk failure:
+
+- the **👾 button** next to the color-theme toggle in the nav, and
+- **clicking a node** in the cluster schematic (the quorum) — that node's disk fails.
+
+Either one re-serves the page from corrupted blocks: words are scrambled with
+typoglycemia on **every page** (hero, post list, article bodies — never the terminal
+chrome), the failed replica goes red, the console reports `✗ … checksum mismatch`, and the
+status bar drops to `disk: read errors`. It persists + re-rolls on reload; trigger again to
+heal.
 
 | Key | Default | Description |
 |-----|---------|-------------|
-| `chaos_enabled` | `true` | Show the fault-injection bar (`inject disk failure`) |
-| `chaos_hint` | _(none)_ | Optional hint text on the right of the fault bar |
-
-The corruption (typoglycemia) is applied to content on **every page** — the hero, the
-post list, and article bodies — never to the terminal chrome (nav, console, footer).
+| `chaos_enabled` | `true` | Arm the disk-failure easter egg (👾 button + clickable cluster) |
 
 ### Hero (home page)
 

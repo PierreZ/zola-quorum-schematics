@@ -15,5 +15,8 @@
     <div class="search-results" id="search-results"></div>
   </div>
   {%- endif %}
-  <button class="flip" id="flipbtn" type="button" aria-label="toggle color theme">⊕ cyanotype</button>
+  <button class="flip" id="flipbtn" type="button" aria-label="toggle color theme">⊕ dark</button>
+  {%- if config.extra.chaos_enabled | default(value=true) %}
+  <button class="invader" id="chaosbtn" type="button" aria-label="inject disk failure" aria-pressed="false" title="inject disk failure">👾</button>
+  {%- endif %}
 </div>

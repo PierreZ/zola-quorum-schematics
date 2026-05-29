@@ -12,7 +12,7 @@
 </section>
 {%- endif %}
 
-<div class="sec-head">ls .{{ section.path }} <span class="ref">ref. {{ section.path }}</span></div>
+<div class="sec-head">ls .{{ section.path }}</div>
 <div class="bom">
   {%- for page in section.pages %}
   {{ m::bom_row(page=page, n=loop.index) }}

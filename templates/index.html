@@ -3,7 +3,6 @@
 
 {% block content %}
 <section class="hero">
-  <span class="fig">fig. 1 — author</span>
   {% if section.title %}<h1>{{ section.title | safe }}</h1>{% endif %}
   <div class="hero-intro">
     {{ section.content | safe }}
@@ -19,7 +18,7 @@
 </section>
 
 {%- set posts = get_section(path="posts/_index.md") %}
-<div class="sec-head">ls ./posts <span class="ref">ref. /posts</span></div>
+<div class="sec-head">ls ./posts</div>
 <div class="bom">
   {%- for page in posts.pages %}
   {{ m::bom_row(page=page, n=loop.index) }}

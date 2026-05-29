@@ -12,7 +12,7 @@
     var d = document.getElementById("syntax-dark");
     if (l) l.disabled = dark;
     if (d) d.disabled = !dark;
-    if (btn) btn.textContent = dark ? "⊕ blueprint" : "⊕ cyanotype";
+    if (btn) btn.textContent = dark ? "⊕ light" : "⊕ dark";
   }
 
   // Sync button label with whatever the inline script already chose.

@@ -64,7 +64,6 @@
 <div class="sheet">
   {% include "partials/nav.html" %}
   {% include "partials/console.html" %}
-  {% if config.extra.chaos_enabled | default(value=true) %}{% include "partials/chaos.html" %}{% endif %}
 
   {% block content %}{% endblock content %}
 
