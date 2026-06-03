@@ -8,7 +8,7 @@
 <div class="sec-head">ls ./{{ taxonomy.name }}/{{ term.slug }}</div>
 <div class="bom">
   {%- for page in term.pages %}
-  {{ m::bom_row(page=page, n=loop.index) }}
+  {{ m::bom_row(page=page) }}
   {%- endfor %}
 </div>
 {% endblock content %}

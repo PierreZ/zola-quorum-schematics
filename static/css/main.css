@@ -96,10 +96,9 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 /* ---- NAV = terminal command history ---- */
 .topnav { display: flex; align-items: center; gap: 1.2rem; padding: .7rem 1.2rem; border-bottom: 1px solid var(--grid-bold); font-size: .86rem; }
 .topnav .logo { font-weight: 800; font-size: 1.22rem; color: var(--ink); letter-spacing: -.02em; white-space: nowrap; }
-.topnav .logo::before { content: "◳ "; color: var(--cyan); }
 .topnav nav { display: flex; gap: 1rem; margin-left: auto; }
-.topnav nav a { color: var(--ink-dim); }
-.topnav nav a::before { content: "$ "; color: var(--ink-faint); }
+.topnav nav a { color: var(--ink); font-weight: 600; }
+.topnav nav a::before { content: "$ "; color: var(--ink-dim); }
 .topnav nav a:hover { color: var(--cyan); text-decoration: none; }
 .flip { background: none; border: 1px solid var(--grid-bold); color: var(--ink-dim); font-family: inherit; font-size: .74rem; cursor: pointer; padding: .2rem .5rem; }
 .flip:hover { border-color: var(--cyan); color: var(--cyan); }
@@ -117,6 +116,9 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---- HERO ---- */
 .hero { padding: 2.2rem 1.6rem; border-bottom: 1px dashed var(--grid-bold); position: relative; }
+.hero-head { display: flex; align-items: center; gap: 1.6rem; }
+.hero-text { flex: 1; min-width: 0; }
+.hero-avatar { flex: none; width: 150px; height: 150px; border-radius: 50%; border: 1px solid var(--ink); object-fit: cover; }
 .hero h1 { font-size: clamp(1.7rem, 4.5vw, 2.5rem); letter-spacing: -.02em; line-height: 1.12; margin-bottom: 1rem; font-weight: 800; }
 .hero h1 .u { text-decoration: underline; text-decoration-color: var(--cyan); text-underline-offset: 6px; text-decoration-thickness: 2px; }
 .hero p { color: var(--ink-dim); margin-bottom: .6rem; font-size: .94rem; }
@@ -138,19 +140,26 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---- BOM / POST LIST ---- */
 .bom { padding: 0 1.6rem 1.2rem; }
-.bom .row { display: grid; grid-template-columns: 3rem 7rem 1fr; gap: 1rem; padding: .8rem 0; border-bottom: 1px solid var(--grid-bold); align-items: baseline; }
+.bom .row { display: grid; grid-template-columns: 7rem 1fr; gap: 1rem; padding: .8rem 0; border-bottom: 1px solid var(--grid-bold); align-items: baseline; }
 .bom .row:last-child { border-bottom: none; }
 .bom .row:hover .ttl { color: var(--cyan); }
-.bom .row:hover .no::after { content: "_"; color: var(--cyan); }
-.bom .no { color: var(--ink-faint); font-size: .78rem; }
-.bom .date { color: var(--ink-dim); font-size: .76rem; }
-.bom .date .seed { display: block; color: var(--ink-faint); margin-top: .15rem; font-size: .68rem; }
+.bom .date { color: var(--ink); font-size: .82rem; font-variant-numeric: tabular-nums; }
 .bom .ttl { font-weight: 600; font-size: 1rem; letter-spacing: -.01em; }
 .bom a.ttl { color: var(--ink); }
 .bom .row:hover a.ttl { color: var(--cyan); text-decoration: none; }
-.bom .desc { color: var(--ink-dim); font-size: .82rem; margin-top: .2rem; }
+.bom .desc { display: block; color: var(--ink-dim); font-size: .82rem; margin-top: .2rem; }
+.bom a.desc:hover { color: var(--cyan); text-decoration: none; }
+.bom .row:hover a.desc { color: var(--ink); }
 .bom .tg { color: var(--cyan); font-size: .7rem; margin-top: .3rem; }
 .bom .tg a { color: var(--cyan); }
+
+/* ---- TAG INDEX (taxonomy list) ---- */
+.taglist { display: flex; flex-wrap: wrap; gap: .6rem; padding: .4rem 1.6rem 1.4rem; }
+.taglist .tag { display: inline-flex; align-items: baseline; gap: .5rem; padding: .35rem .7rem; border: 1px solid var(--grid-bold); color: var(--ink); font-size: .9rem; }
+.taglist .tag:hover { border-color: var(--cyan); color: var(--cyan); text-decoration: none; }
+.taglist .tag .cnt { color: var(--ink-dim); font-size: .72rem; font-variant-numeric: tabular-nums; }
+.taglist .tag:hover .cnt { color: var(--cyan); }
+.taglist .tag--empty { color: var(--ink-dim); }
 
 /* ---- ARTICLE ---- */
 .article { padding: 1.8rem 1.6rem; }
@@ -164,15 +173,12 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .toc .h { background: var(--paper-2); padding: .45rem .8rem; font-size: .68rem; text-transform: uppercase; letter-spacing: .12em; color: var(--ink-dim); border-bottom: 1px solid var(--grid-bold); }
 .toc .h::before { content: "▼ "; color: var(--cyan); }
 .toc ol { list-style: none; }
-.toc li { display: flex; gap: .8rem; padding: .35rem .8rem; border-bottom: 1px dotted var(--grid-bold); font-size: .86rem; }
-.toc li:last-child { border-bottom: none; }
-.toc li .n { color: var(--cyan); width: 2rem; flex: none; }
+.toc > ol { padding: .4rem 0; }
+.toc li { display: flex; flex-wrap: wrap; gap: .5rem; padding: .22rem .8rem; font-size: .85rem; }
+.toc li .n { color: var(--cyan); flex: none; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .toc a { color: var(--ink); }
 .toc a:hover { color: var(--cyan); text-decoration: none; }
-.toc li { flex-wrap: wrap; }
-.toc li .n { white-space: nowrap; }
-.toc ol ol { list-style: none; width: 100%; margin: .35rem 0 0 1.1rem; }
-.toc ol ol li { border-bottom: none; padding: .2rem 0; font-size: .82rem; }
+.toc ol ol { list-style: none; width: 100%; margin-left: 1.1rem; }
 
 /* ---- PROSE (markdown body) ---- */
 .prose p { margin-bottom: 1.15rem; }
@@ -274,7 +280,7 @@ code.inline, .prose p > code, .prose li > code { background: var(--paper-2); bor
 
 /* typoglycemia artifacts from a single read on a corrupted replica:
    still readable (first/last letter intact), but marked as corrupted */
-.rot { text-decoration: underline dotted var(--red); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+.rot { text-decoration: underline dotted var(--red); text-decoration-thickness: 3px; text-underline-offset: 3px; }
 
 /* ---- SEARCH (optional, lives in the nav) ---- */
 .nav-search { position: relative; }
@@ -299,8 +305,9 @@ code.inline, .prose p > code, .prose li > code { background: var(--paper-2); bor
   /* Keep the nav reachable on phones: wrap the commands onto their own row
      instead of hiding them entirely. */
   .topnav nav { order: 3; width: 100%; margin-left: 0; flex-wrap: wrap; gap: .5rem .9rem; font-size: .78rem; }
-  .bom .row { grid-template-columns: 2rem 1fr; }
-  .bom .date { display: none; }
+  .bom .row { grid-template-columns: 1fr; gap: .25rem; }
+  .hero-head { flex-direction: column-reverse; align-items: center; gap: 1.1rem; text-align: center; }
+  .hero-avatar { width: 96px; height: 96px; }
   .article, .hero, .bom { padding-left: 1.1rem; padding-right: 1.1rem; }
   /* Wide markdown tables scroll instead of breaking the layout. */
   .prose table { display: block; overflow-x: auto; }

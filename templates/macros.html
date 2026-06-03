@@ -2,33 +2,6 @@
    macros.html — reusable Tera helpers
    ========================================================================== #}
 
-{# Deterministic seed derived from a slug. Pure-Tera string hash (Zola has no
-   string hashing function), rendered as 0x + 7 hex digits. The same slug
-   always yields the same seed. djb2-style polynomial mod 2^28. #}
-{% macro seed(slug) %}
-{%- set abc = "0123456789abcdefghijklmnopqrstuvwxyz-_." | split(pat="") -%}
-{%- set hx = ["0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"] -%}
-{%- set chars = slug | split(pat="") -%}
-{%- set_global bp_acc = 5381 -%}
-{%- for ch in chars -%}
-  {%- if ch -%}
-    {%- set_global bp_idx = 1 -%}
-    {%- for a in abc -%}
-      {%- if a == ch -%}{%- set_global bp_idx = loop.index -%}{%- endif -%}
-    {%- endfor -%}
-    {%- set_global bp_acc = (bp_acc * 33 + bp_idx) % 268435456 -%}
-  {%- endif -%}
-{%- endfor -%}
-{%- set pows = [16777216, 1048576, 65536, 4096, 256, 16, 1] -%}
-{%- set_global bp_out = "0x" -%}
-{%- for p in pows -%}
-  {%- set q = (bp_acc / p) | int -%}
-  {%- set d = q % 16 -%}
-  {%- set_global bp_out = bp_out ~ hx[d] -%}
-{%- endfor -%}
-{{- bp_out -}}
-{% endmacro seed %}
-
 {# Recursive table-of-contents list. Renders page.toc and its nested children
    (h2 → h3 → h4 …) as nested <ol>s, hierarchically numbered (1, 1.1, 1.2 …),
    capped at `depth` levels deep. #}
@@ -44,20 +17,13 @@
 </ol>
 {% endmacro toc_list %}
 
-{# 3-digit zero-padded line number for the BOM. #}
-{% macro lineno(n) %}{% if n < 10 %}00{{ n }}{% elif n < 100 %}0{{ n }}{% else %}{{ n }}{% endif %}{% endmacro lineno %}
-
-{# Footer vector clock: [deploy:N, edit:M, rev:X] #}
-{% macro vector_clock(deploy, edit, rev) %}logical clock: <b>[deploy:{{ deploy }}, edit:{{ edit }}, rev:{{ rev }}]</b>{% endmacro vector_clock %}
-
 {# A single nomenclature (BOM) row for a post listing. #}
-{% macro bom_row(page, n) %}
+{% macro bom_row(page) %}
   <div class="row">
-    <div class="no">{{ self::lineno(n=n) }}</div>
-    <div class="date">{{ page.date | date(format="%Y-%m-%d") }}<span class="seed">{{ self::seed(slug=page.slug) | trim }}</span></div>
+    <div class="date">{{ page.date | date(format="%Y-%m-%d") }}</div>
     <div>
       <a class="ttl" href="{{ page.permalink | safe }}">{{ page.title }}</a>
-      {%- if page.description %}<div class="desc">{{ page.description }}</div>{% endif %}
+      {%- if page.description %}<a class="desc" href="{{ page.permalink | safe }}">{{ page.description }}</a>{% endif %}
       {%- if page.taxonomies.tags %}
       <div class="tg">{% for t in page.taxonomies.tags %}<a href="{{ get_taxonomy_url(kind='tags', name=t) | safe }}">#{{ t }}</a>{% if not loop.last %} {% endif %}{% endfor %}</div>
       {%- endif %}

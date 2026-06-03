@@ -5,17 +5,12 @@
 
 {% block content %}
 <div class="sec-head">ls ./{{ taxonomy.name }}</div>
-<div class="bom">
-  {%- for term in terms %}
-  <div class="row">
-    <div class="no">#</div>
-    <div class="date">{{ term.pages | length }} post{{ term.pages | length | pluralize }}</div>
-    <div>
-      <a class="ttl" href="{{ term.permalink | safe }}">#{{ term.name }}</a>
-    </div>
-  </div>
+<div class="taglist">
+  {%- set sorted_terms = terms | sort(attribute="page_count") | reverse %}
+  {%- for term in sorted_terms %}
+  <a class="tag" href="{{ term.permalink | safe }}">#{{ term.name }}<span class="cnt">{{ term.pages | length }}</span></a>
   {%- else %}
-  <div class="row"><div class="no">000</div><div></div><div class="ttl">no tags yet</div></div>
+  <span class="tag tag--empty">no tags yet</span>
   {%- endfor %}
 </div>
 {% endblock content %}

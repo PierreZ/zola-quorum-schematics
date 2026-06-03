@@ -22,10 +22,12 @@ repo = "https://github.com/PierreZ/zola-quorum-schematics"
 # ---------------------------------------------------------------------------
 [extra]
 logo = "Pierre Zemb"                          # nav brand (falls back to config.title)
+avatar = "images/avatar.jpg"                  # profile image beside the hero intro (static/ path or https URL; omit to hide)
 prompt_user = "root@pierrezemb.fr"           # console: user@host before the $
 prompt_path = "~/blog"                       # console: path after the colon
 read_replica = "node-0"                      # no-JS fallback label for the serving replica
 cluster_enabled = true                       # show the 3-node cluster schematic in the console
+home_post_limit = 5                          # how many of the latest posts to list on the home page
 read_modes = true                            # read-mode toggle: quorum R=2 ⇄ single R=1 (the corrupted-replica reveal)
 default_read_mode = "quorum"                  # initial read mode: "quorum" or "single"
 dimline_start = "2019"                        # hero dimension line, left end
@@ -33,7 +35,6 @@ dimline_end = "2026 · 6 yrs"                  # hero dimension line, right end
 status_online = "● online"                    # status bar, left label
 status_uptime = "uptime: 6y"                  # status bar, uptime label
 copyright = "© 2026 Pierre Zemb · built deterministically"
-clock_rev = "A"                               # vector clock: rev: field
 theme_color = "#15324d"                       # <meta name=theme-color>
 # og_image = "og.png"                         # default OpenGraph/Twitter card image (static/ path or https URL)
 # specs = [{label, value}, ...]               # hero spec cells

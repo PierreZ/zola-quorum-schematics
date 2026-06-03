@@ -27,9 +27,6 @@ reserved for failure states. Zero CDN — the font is self-hosted.
     Most pages still read fine — that gamble is the point. Re-rolls on reload; mode persists.
 - **Page-aware quorum-read console**: each page echoes `./read --quorum <its path>` (or
   `--replica nX` in single mode) with real counts; the serving replica(s) are highlighted.
-- **Deterministic seed** per post, derived from its slug (stable hex like `0x4f2a91e`),
-  shown in the post list.
-- Footer **vector clock** `[deploy:N, edit:M, rev:X]` derived from build metadata.
 - **Nested table of contents** (hierarchically numbered `1`, `1.1`, `1.1.1`, up to 4
   levels deep) from `page.toc`, clickable heading anchors. Hide it per page with
   `extra.hide_table_of_contents = true`.
@@ -119,6 +116,7 @@ replica(s) are highlighted (see read modes).
 | `prompt_path` | `~/blog` | Path after the `:` |
 | `read_replica` | `node-0` | No-JS fallback label for the serving replica |
 | `cluster_enabled` | `true` | Show the 3-node cluster schematic in the console |
+| `home_post_limit` | `5` | How many of the latest posts to list on the home page |
 
 The `N` counts are real (from the section/taxonomy being viewed). A post's meta row shows
 its date, reading time, and tags.
@@ -150,6 +148,7 @@ cluster block** — switches how the page is read; the mode persists in `localSt
 
 | Key | Default | Description |
 |-----|---------|-------------|
+| `avatar` | – | Profile image beside the hero intro (path under `static/` or an https URL). Omit to hide |
 | `specs` | – | Array of `{ label, value }` cells (`domain` / `focus` / `lang` …) |
 | `dimline_start` | – | Left end of the dimension line |
 | `dimline_end` | – | Right end of the dimension line |
@@ -171,10 +170,6 @@ dimline_end = "2026 · 6 yrs"
 ### Article
 
 The post meta row shows the date, reading time, and tags.
-
-| Key | Default | Description |
-|-----|---------|-------------|
-| `clock_rev` | `A` | The `rev:` field of the footer vector clock |
 
 Per-post front-matter `[extra]` keys the theme reads:
 
@@ -303,14 +298,6 @@ A responsive 16:9 privacy-friendly (`youtube-nocookie`) embed.
 ```
 {{/* youtube(id="dQw4w9WgXcQ") */}}
 ```
-
-## How the signature bits work
-
-- **Seed** — Zola has no string-hashing function, so the theme computes a deterministic
-  djb2-style hash of `page.slug` in pure Tera (`templates/macros.html`, `seed` macro),
-  rendered as `0x` + 7 hex digits. The same slug always yields the same seed.
-- **Vector clock** — `deploy` = number of posts, `edit` = number of tag terms,
-  `rev` = `extra.clock_rev`. Cosmetic but stable.
 
 ## Known limitations / choices
 

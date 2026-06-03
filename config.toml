@@ -60,12 +60,20 @@ include_content = true
 # may be long — set a short brand here).
 logo = "Pierre Zemb"
 
+# Profile image shown beside the home-page hero intro. Path under static/ (or a
+# full https URL). Omit to hide it.
+avatar = "images/avatar.jpg"
+
 # --- Console strip (the terminal client: prompt + distributed read log) ---
 prompt_user   = "root@pierrezemb.fr"
 prompt_path   = "~/blog"
 # No-JS fallback label for the replica a read is "served from" (read.js drives the
 # live read state once JS loads).
 read_replica  = "node-0"
+
+# --- Home page post listing ---
+# How many of the latest posts to list on the home page (`ls -t ./posts | head -N`).
+home_post_limit = 5
 
 # --- Cluster schematic (3 nodes drawn in the console = the replica set) ---
 cluster_enabled = true
@@ -100,9 +108,8 @@ theme_color = "#15324d"
 status_online = "● online"
 status_uptime = "uptime: 6y"
 
-# --- Footer: revision history + vector clock + social links ---
+# --- Footer: revision history + social links ---
 copyright   = "© 2026 Pierre Zemb · built deterministically"
-clock_rev   = "A"   # the `rev:` field of the logical clock
 [extra.search]
 enabled = true
 

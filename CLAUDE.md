@@ -21,7 +21,7 @@ committing (the "dirty Git tree" line is from Nix, not Zola — ignore it).
 - `templates/base.html` — head, `.sheet` wrapper, includes all partials, defines blocks
   `title` / `description` / `content` / `extra_head` / `extra_body`. Computes
   `post_count` from `get_section(path="posts/_index.md")`.
-- `templates/macros.html` — `seed(slug)`, `lineno(n)`, `bom_row(page, n)`, `toc_list(...)`.
+- `templates/macros.html` — `bom_row(page)`, `toc_list(...)`.
 - `templates/partials/` — cluster (SVG in the console; `.cluster-cell` is a click target that
   switches read mode), nav (terminal command-history + the `read: quorum/single` toggle +
   search), console (page-aware `./read --quorum <target>`, with `#read-cmd`/`#console-out`
@@ -39,10 +39,6 @@ committing (the "dirty Git tree" line is from Nix, not Zola — ignore it).
 
 ## Tera / Zola gotchas (all learned the hard way here — don't reintroduce)
 
-- **No string hash function** in Zola. The per-post seed is a pure-Tera djb2 hash in the
-  `seed` macro (`split(pat="")` over chars → `set_global` polynomial → 7 hex digits via
-  an array literal `hx[d]`). `split(pat="")` emits empty boundary elements — the `if ch`
-  guard skips them. Don't "simplify" this away; same slug must give the same seed.
 - **Can't access `.attr` on a function-call result.** `get_section(...).pages` fails to
   parse. Assign to a variable first: `{% set s = get_section(...) %}{{ s.pages }}`.
 - **Can't call a macro inside an expression.** `x ~ self::m(...)` fails. Use values
