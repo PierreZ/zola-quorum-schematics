@@ -97,10 +97,10 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 .topnav { display: flex; align-items: center; gap: 1.2rem; padding: .7rem 1.2rem; border-bottom: 1px solid var(--grid-bold); font-size: .86rem; }
 .topnav .logo { font-weight: 800; font-size: 1.22rem; color: var(--ink); letter-spacing: -.02em; white-space: nowrap; }
 .topnav nav { display: flex; gap: 1rem; margin-left: auto; }
-.topnav nav a { color: var(--ink); font-weight: 600; }
+.topnav nav a { color: var(--ink); font-weight: 600; white-space: nowrap; }
 .topnav nav a::before { content: "$ "; color: var(--ink-dim); }
 .topnav nav a:hover { color: var(--cyan); text-decoration: none; }
-.flip { background: none; border: 1px solid var(--grid-bold); color: var(--ink-dim); font-family: inherit; font-size: .74rem; cursor: pointer; padding: .2rem .5rem; }
+.flip { background: none; border: 1px solid var(--grid-bold); color: var(--ink-dim); font-family: inherit; font-size: .74rem; cursor: pointer; padding: .2rem .5rem; white-space: nowrap; }
 .flip:hover { border-color: var(--cyan); color: var(--cyan); }
 
 /* ---- CONSOLE STRIP (the terminal client) ---- */
@@ -274,7 +274,8 @@ code.inline, .prose p > code, .prose li > code { background: var(--paper-2); bor
 
 /* ---- READ-MODE TOGGLE (quorum R=2 ⇄ single R=1) ---- */
 /* sits next to the theme flip; turns red when a single read exposes the rot */
-.readmode { background: none; border: 1px solid var(--grid-bold); color: var(--ink-dim); font-family: inherit; font-size: .74rem; cursor: pointer; padding: .2rem .5rem; transition: border-color .15s ease, color .15s ease; }
+.readmode { background: none; border: 1px solid var(--grid-bold); color: var(--ink-dim); font-family: inherit; font-size: .74rem; cursor: pointer; padding: .2rem .5rem; white-space: nowrap; transition: border-color .15s ease, color .15s ease; }
+.console .readmode { flex: none; align-self: center; }
 .readmode:hover { border-color: var(--cyan); color: var(--cyan); }
 .readmode.single { border-color: var(--red); color: var(--red); }
 
