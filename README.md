@@ -203,16 +203,33 @@ The theme emits `og:*` / `twitter:*` tags, `rel=canonical`, and `<meta name="aut
 drop your own `favicon.ico` / `apple-touch-icon.png` / PNG set into `static/` and add the
 matching `<link>`s in `templates/partials/favicon.html` for full legacy/PWA coverage.
 
+The shipped `static/site.webmanifest` carries the theme's own `name` / `short_name`
+(`zola-quorum-schematics` / `quorum`) — so an installed PWA would show that, not your
+site. Static files are copied verbatim (Zola doesn't template them), so override it by
+editing `static/site.webmanifest` in your own site: set `name` / `short_name` to your
+title and `theme_color` to match your `[extra].theme_color`.
+
 ### Analytics (optional)
 
 Add an `[extra.plausible]` block to inject a [Plausible](https://plausible.io) script;
-omit it entirely to disable. The theme is otherwise analytics-free.
+omit it entirely to disable. The theme is otherwise analytics-free. Two installation
+styles are supported:
 
 ```toml
+# Current per-site script (Oct 2025+) — copy the snippet from your Plausible
+# site settings. Loads pa-XXXXX.js and self-bootstraps via plausible.init().
+[extra.plausible]
+src = "https://plausible.io/js/pa-XXXXX.js"
+```
+
+```toml
+# — or — the classic script, keyed by your site domain:
 [extra.plausible]
 domain = "example.com"
-src    = "https://plausible.io/js/script.js"   # optional; this is the default
 ```
+
+Set `src` for the per-site script (no `domain` needed) **or** `domain` for the classic
+script. If both are set, `src` wins.
 
 ### Status bar
 

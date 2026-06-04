@@ -48,5 +48,16 @@
   <meta property="article:published_time" content="{{ page.date | date(format='%Y-%m-%dT%H:%M:%S%:z') }}">
   {%- endif %}
   {%- if config.extra.plausible %}
-  <script defer data-domain="{{ config.extra.plausible.domain }}" src="{{ config.extra.plausible.src | default(value='https://plausible.io/js/script.js') }}"></script>
+  {%- set pa = config.extra.plausible %}
+  {%- if pa.src %}
+  {#- Current per-site script (Oct 2025+): loads pa-XXXXX.js, no data-domain, self-bootstraps. -#}
+  <script defer src="{{ pa.src | safe }}"></script>
+  <script>
+    window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+    plausible.init()
+  </script>
+  {%- elif pa.domain %}
+  {#- Classic script, keyed by data-domain. -#}
+  <script defer data-domain="{{ pa.domain | safe }}" src="https://plausible.io/js/script.js"></script>
+  {%- endif %}
   {%- endif %}

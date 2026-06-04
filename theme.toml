@@ -41,5 +41,6 @@ theme_color = "#15324d"                       # <meta name=theme-color>
 # nav = [{name, url}, ...]                     # top navigation links
 # social = [{name, url}, ...]                  # footer social links
 # [extra.search] enabled = true               # client-side search box
-# [extra.plausible] domain = "example.com"    # optional Plausible analytics (omit to disable)
+# [extra.plausible] src = ".../pa-XXXXX.js"   # optional Plausible: per-site script (Oct 2025+)
+# [extra.plausible] domain = "example.com"    #   — or — the classic script (omit block to disable)
 # Per-page front-matter [extra]: canonical, image, hide_table_of_contents

@@ -100,9 +100,11 @@ default_read_mode = "quorum"        # initial mode: "quorum" or "single"
 theme_color = "#15324d"
 
 # --- Analytics (optional; omit the block entirely to disable) ---
+# Set `src` for Plausible's current per-site script (Oct 2025+), OR `domain` for
+# the classic script. If both are set, `src` wins. See README for details.
 # [extra.plausible]
+# src    = "https://plausible.io/js/pa-XXXXX.js"
 # domain = "example.com"
-# src    = "https://plausible.io/js/script.js"
 
 # --- Status bar (fixed, tmux/htop style) ---
 status_online = "● online"

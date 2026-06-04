@@ -1,5 +1,7 @@
 {# SVG favicon + web manifest (zero binary assets shipped). Drop your own
    favicon.ico / apple-touch-icon.png / android-chrome PNGs into static/ and add
-   the matching <link> lines here if you want full legacy/PWA icon coverage. #}
+   the matching <link> lines here if you want full legacy/PWA icon coverage.
+   The shipped static/site.webmanifest uses the theme's name/short_name; edit it
+   in your own site so an installed PWA shows your title (see README → SEO). #}
   <link rel="icon" href="{{ get_url(path='favicon.svg') | safe }}" type="image/svg+xml">
   <link rel="manifest" href="{{ get_url(path='site.webmanifest') | safe }}">
