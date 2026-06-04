@@ -306,9 +306,9 @@ code.inline, .prose p > code, .prose li > code { background: var(--paper-2); bor
   /* Console: stop the read-log being crushed into a thin column beside the
      toggle + cluster. Give the log the full first row; the read-mode button
      and cluster schematic wrap onto a second row below it. */
-  .console { flex-wrap: wrap; gap: .7rem 1rem; }
+  .console { flex-wrap: wrap; gap: .7rem 1rem; justify-content: space-between; align-items: center; }
   .console .log { flex-basis: 100%; }
-  .console .cluster-cell { border-left: none; padding-left: 0; }
+  .console .cluster-cell { border-left: none; padding: 0; }
   /* Keep the nav reachable on phones: wrap the commands onto their own row
      instead of hiding them entirely. */
   .topnav nav { order: 3; width: 100%; margin-left: 0; flex-wrap: wrap; gap: .5rem .9rem; font-size: .78rem; }
