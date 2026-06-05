@@ -2,7 +2,7 @@
 
 A [Zola](https://www.getzola.org) theme that looks like an **architect's drawing
 sheet** but breathes like a **terminal**: a command-history nav, a page-aware quorum-read
-console with a blinking cursor, a fixed status bar, and a switchable **read mode** that
+console with a blinking cursor, and a switchable **read mode** that
 lets a single-replica read expose the corruption a quorum read silently heals.
 Two color themes — `blueprint` (ink on warm paper, light) and `cyanotype` (the negative:
 cyan on navy, dark).
@@ -136,7 +136,7 @@ cluster block** — switches how the page is read; the mode persists in `localSt
   is the faulty one, you get the **real corruption**: words scrambled with typoglycemia
   across the page (hero, post list, article
   bodies — never the terminal chrome or code blocks), the node goes red, `✗ … checksum
-  mismatch`, the status bar drops to `nodes: 2/3 · 1 corrupt`. **Most reads land on a healthy
+  mismatch`. **Most reads land on a healthy
   replica and look fine** — reload to re-roll. (Honors `prefers-reduced-motion`: indicators
   still flip, text isn't scrambled.)
 
@@ -235,15 +235,6 @@ domain = "example.com"
 
 Set `src` for the per-site script (no `domain` needed) **or** `domain` for the classic
 script. If both are set, `src` wins.
-
-### Status bar
-
-| Key | Default | Description |
-|-----|---------|-------------|
-| `status_online` | `● online` | Left label |
-| `status_uptime` | `uptime: —` | Uptime label |
-
-`last deploy` is the real build date (`now()`).
 
 ### Footer & navigation
 

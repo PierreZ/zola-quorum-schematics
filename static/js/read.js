@@ -51,9 +51,6 @@
   var consoleOut = document.getElementById("console-out");
   var readCmd = document.getElementById("read-cmd");
   var cmdTarget = readCmd ? (readCmd.dataset.target || "") : "";
-  var sbRead = document.getElementById("sb-read");
-  var sbNodes = document.getElementById("sb-nodes");
-  var sbDot = document.getElementById("sb-dot");
 
   // Pristine snapshots, captured once so quorum restores byte-for-byte.
   var pristine = roots.map(function (r) { return r.innerHTML; });
@@ -190,13 +187,6 @@
     // (the restore wiped their rendered SVG back to raw source text).
     document.dispatchEvent(new Event("readmode:changed"));
 
-    if (sbRead) {
-      sbRead.textContent = single
-        ? (corrupted ? "read: single R=1 · mismatch" : "read: single R=1 · unverified")
-        : (repair ? "read: quorum R=2 · repaired " + label(F) : "read: quorum R=2");
-    }
-    if (sbNodes) sbNodes.textContent = corrupted ? "nodes: 2/3 · 1 corrupt" : "nodes: 3/3 healthy";
-    if (sbDot) sbDot.style.color = corrupted ? "var(--red)" : "";
     if (btn) {
       btn.textContent = single ? "read: single" : "read: quorum";
       btn.classList.toggle("single", single);

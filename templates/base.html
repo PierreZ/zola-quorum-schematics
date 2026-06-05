@@ -78,8 +78,6 @@
   {% include "partials/footer.html" %}
 </div>
 
-{% include "partials/statusbar.html" %}
-
 <script src="{{ get_url(path='js/theme-toggle.js') | safe }}" defer></script>
 <script id="read-ctl" src="{{ get_url(path='js/read.js') | safe }}" data-default-mode="{{ config.extra.default_read_mode | default(value='quorum') }}" data-enabled="{{ config.extra.read_modes | default(value=true) }}" defer></script>
 <script id="mermaid-init" src="{{ get_url(path='js/mermaid-init.js') | safe }}" data-src="{{ get_url(path='js/mermaid.min.js') | safe }}" defer></script>

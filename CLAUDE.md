@@ -25,7 +25,7 @@ committing (the "dirty Git tree" line is from Nix, not Zola — ignore it).
 - `templates/partials/` — cluster (SVG in the console; `.cluster-cell` is a click target that
   switches read mode), nav (terminal command-history + the `read: quorum/single` toggle +
   search), console (page-aware `./read --quorum <target>`, with `#read-cmd`/`#console-out`
-  hooks JS rewrites), statusbar, footer. **Read modes** (quorum R=2 ⇄ single R=1) are wired in
+  hooks JS rewrites), footer. **Read modes** (quorum R=2 ⇄ single R=1) are wired in
   `static/js/read.js` (which superseded the old `render.js` + `chaos.js`): one silently-faulty
   replica is rolled per load; a quorum read read-repairs it when touched, a single read serves
   its typoglycemia corruption when it lands on it. `read_modes` arms the toggle + reveal;
@@ -64,7 +64,7 @@ committing (the "dirty Git tree" line is from Nix, not Zola — ignore it).
 ## Conventions
 
 - Roboto (self-hosted variable) for prose, system Consolas stack (`--font-mono`) for code +
-  terminal chrome (topnav, console, statusbar, sec-head, crumbs); `1px` borders (no
+  terminal chrome (topnav, console, sec-head, crumbs); `1px` borders (no
   shadows), single cyan accent, red only for failure
   states (cyan = served, amber = read-repaired, red = corrupted single read). Only the cursor
   blinks; the single-read corruption is rolled once per load (static while reading) and honors

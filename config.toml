@@ -106,10 +106,6 @@ theme_color = "#15324d"
 # src    = "https://plausible.io/js/pa-XXXXX.js"
 # domain = "example.com"
 
-# --- Status bar (fixed, tmux/htop style) ---
-status_online = "● online"
-status_uptime = "uptime: 6y"
-
 # --- Footer: revision history + social links ---
 copyright   = "© 2026 Pierre Zemb · built deterministically"
 [extra.search]

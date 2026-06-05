@@ -1,7 +1,7 @@
 /* ============================================================
    PIERRE ZEMB — BLUEPRINT × TERMINAL
    Architect's drawing sheet, but it breathes like a terminal:
-   prompt line, live cursor, status bar, console echo, dark flip.
+   prompt line, live cursor, console echo, dark flip.
    ============================================================ */
 
 /* ---- SELF-HOSTED FONT (no CDN) ---- */
@@ -35,8 +35,6 @@
   --amber:     #b9770e;
   --red:       #c0392b;
   --selection: #cfe4ee;
-  --status-bg: #15324d;
-  --status-fg: #f6f7f4;
 }
 /* dark flip = blueprint negative = the classic cyanotype */
 :root[data-theme="cyanotype"] {
@@ -51,8 +49,6 @@
   --amber:     #e0a850;
   --red:       #e06c75;
   --selection: #1f4257;
-  --status-bg: #38c5e8;
-  --status-fg: #0d1f2d;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -65,7 +61,6 @@ body {
   font-family: var(--font-sans);
   line-height: 1.62;
   -webkit-font-smoothing: antialiased;
-  padding-bottom: 2.6rem;
   transition: background .25s ease, color .25s ease;
 }
 
@@ -87,7 +82,7 @@ a:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* terminal chrome + code stay monospace; everything else inherits Roboto.
    .topnav covers logo/nav/flip/search (inherit); .console covers readmode. */
-.topnav, .console, .statusbar, .sec-head, .article .crumbs,
+.topnav, .console, .sec-head, .article .crumbs,
 pre, code, kbd { font-family: var(--font-mono); }
 
 .cursor { display: inline-block; width: .55ch; height: 1.05em; background: var(--cyan); vertical-align: -2px; margin-left: 1px; animation: blink 1.1s steps(1) infinite; }
@@ -300,11 +295,6 @@ code.inline, .prose p > code, .prose li > code { background: var(--paper-2); bor
 .search-results .sr a:hover { color: var(--cyan); text-decoration: none; }
 .search-results .sr .ex { color: var(--ink-dim); font-size: .72rem; margin-top: .15rem; }
 
-/* ---- STATUS BAR (terminal) ---- */
-.statusbar { position: fixed; bottom: 0; left: 0; right: 0; z-index: 6; background: var(--status-bg); color: var(--status-fg); font-size: .72rem; height: 1.6rem; display: flex; align-items: center; }
-.statusbar .in { max-width: 960px; width: 100%; margin: 0 auto; padding: 0 1.2rem; display: flex; gap: 1.2rem; }
-.statusbar .spacer { flex: 1; }
-
 @media (max-width: 640px) {
   .topnav { flex-wrap: wrap; gap: .5rem .9rem; }
   /* Console: stop the read-log being crushed into a thin column beside the
@@ -322,5 +312,4 @@ code.inline, .prose p > code, .prose li > code { background: var(--paper-2); bor
   .article, .hero, .bom { padding-left: 1.1rem; padding-right: 1.1rem; }
   /* Wide markdown tables scroll instead of breaking the layout. */
   .prose table { display: block; overflow-x: auto; }
-  .statusbar .hide-sm { display: none; }
 }
