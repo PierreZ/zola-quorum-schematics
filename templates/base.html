@@ -8,7 +8,7 @@
   <meta name="description" content="{% block description %}{{ config.description }}{% endblock description %}">
   <meta name="referrer" content="strict-origin-when-cross-origin">
 
-  <link rel="preload" href="{{ get_url(path='fonts/JetBrainsMono-Regular.woff2') | safe }}" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="{{ get_url(path='fonts/Roboto-Variable.woff2') | safe }}" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="{{ get_url(path='css/main.css') | safe }}">
   <link rel="stylesheet" id="syntax-light" href="{{ get_url(path='giallo-light.css') | safe }}">
   <link rel="stylesheet" id="syntax-dark" href="{{ get_url(path='giallo-dark.css') | safe }}" disabled>
@@ -21,12 +21,11 @@
   {% block extra_head %}{% endblock extra_head %}
 
   <script>
-  // Set theme before first paint (no flash). Persisted choice wins, else OS.
+  // Set theme before first paint (no flash). Persisted choice wins, else light (blueprint).
   (function () {
     try {
       var saved = localStorage.getItem("bp-theme");
-      var dark = saved ? saved === "cyanotype"
-                       : window.matchMedia("(prefers-color-scheme: dark)").matches;
+      var dark = saved === "cyanotype";
       var theme = dark ? "cyanotype" : "blueprint";
       document.documentElement.setAttribute("data-theme", theme);
       var l = document.getElementById("syntax-light");
@@ -72,7 +71,9 @@
   {% include "partials/nav.html" %}
   {% include "partials/console.html" %}
 
-  {% block content %}{% endblock content %}
+  <main>
+    {% block content %}{% endblock content %}
+  </main>
 
   {% include "partials/footer.html" %}
 </div>

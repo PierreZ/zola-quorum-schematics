@@ -7,15 +7,16 @@ lets a single-replica read expose the corruption a quorum read silently heals.
 Two color themes — `blueprint` (ink on warm paper, light) and `cyanotype` (the negative:
 cyan on navy, dark).
 
-100% monospace. Fine `1px` borders instead of shadows. A single accent cyan, with red
-reserved for failure states. Zero CDN — the font is self-hosted.
+Roboto for prose, monospace (Consolas) for code and the terminal chrome. Fine `1px`
+borders instead of shadows. A single accent cyan, with red reserved for failure states.
+Zero CDN — the font is self-hosted.
 
 ![screenshot](screenshot.png)
 
 ## Features
 
-- Two color themes with a JS toggle that **persists** (`localStorage`) and respects
-  `prefers-color-scheme` on first load — no flash of the wrong theme.
+- Two color themes with a JS toggle that **persists** (`localStorage`); first load
+  defaults to `blueprint` (light) — no flash of the wrong theme.
 - **Switchable read mode** (`read: quorum ⇄ read: single` button by the theme toggle, or
   click the cluster). The cluster always has one silently-faulty replica, rolled per load:
   - **quorum (R=2, default):** reads a majority. When the faulty replica is one of the two
@@ -40,7 +41,8 @@ reserved for failure states. Zero CDN — the font is self-hosted.
 - **`mermaid` and `youtube` shortcodes** (Mermaid is vendored & lazy-loaded — no CDN,
   fetched only on pages that use it, and it re-renders on the color-theme toggle).
 - RSS + Atom feeds, sitemap, tag taxonomy with its own index, optional client-side
-  search (self-hosted elasticlunr), self-hosted JetBrains Mono.
+  search (self-hosted elasticlunr), self-hosted Roboto (variable woff2) with a system
+  Consolas stack for code and terminal chrome.
 - Responsive: the footer cartouche folds, the nav **wraps onto its own row** (still
   reachable on phones), wide tables scroll, and the BOM stacks at narrow widths.
 
@@ -324,8 +326,8 @@ A responsive 16:9 privacy-friendly (`youtube-nocookie`) embed.
   anchors. The TOC is the source of truth for section numbering.
 - **Syntax CSS filenames** are fixed by Zola (`giallo-light.css` / `giallo-dark.css`).
 - **Search** is opt-in and intentionally minimal (title + excerpt, top 8 results).
-- The dark theme is switched via the toggle (and `prefers-color-scheme` on first load),
-  not via `@media` on the syntax sheets, so JS owns the active stylesheet.
+- The dark theme is switched via the toggle, not via `@media` on the syntax sheets,
+  so JS owns the active stylesheet.
 
 ## Development
 

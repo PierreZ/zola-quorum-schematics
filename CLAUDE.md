@@ -63,7 +63,9 @@ committing (the "dirty Git tree" line is from Nix, not Zola — ignore it).
 
 ## Conventions
 
-- 100% monospace, `1px` borders (no shadows), single cyan accent, red only for failure
+- Roboto (self-hosted variable) for prose, system Consolas stack (`--font-mono`) for code +
+  terminal chrome (topnav, console, statusbar, sec-head, crumbs); `1px` borders (no
+  shadows), single cyan accent, red only for failure
   states (cyan = served, amber = read-repaired, red = corrupted single read). Only the cursor
   blinks; the single-read corruption is rolled once per load (static while reading) and honors
   `prefers-reduced-motion`.

@@ -32,7 +32,7 @@
       startOnLoad: false,
       theme: themeName(),
       securityLevel: "strict",
-      fontFamily: "JetBrains Mono, ui-monospace, monospace",
+      fontFamily: "Consolas, ui-monospace, monospace",
       // Render at intrinsic size (not stretched to the full content width); CSS
       // scales it down on narrow screens.
       flowchart: { useMaxWidth: false },

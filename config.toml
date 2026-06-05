@@ -5,7 +5,7 @@
 # ==========================================================================
 
 base_url = "https://example.com"
-title = "Pierre Zemb — blueprint × terminal"
+title = "Pierre Zemb's Blog"
 description = "A Zola theme that looks like an architect's drawing sheet but breathes like a terminal."
 author = "Pierre Zemb"
 

@@ -1,5 +1,5 @@
 name = "zola-quorum-schematics"
-description = "An architect's drawing sheet that breathes like a terminal: command-history nav, page-aware quorum-read console, status bar, blinking cursor, and a hidden disk-failure easter egg. Two color themes (blueprint / cyanotype), 100% monospace, zero CDN."
+description = "An architect's drawing sheet that breathes like a terminal: command-history nav, page-aware quorum-read console, status bar, blinking cursor, and a hidden disk-failure easter egg. Two color themes (blueprint / cyanotype), Roboto prose with monospace terminal chrome, zero CDN."
 license = "MIT"
 homepage = "https://github.com/PierreZ/zola-quorum-schematics"
 # Minimum Zola version: 0.19 introduced the [markdown.highlighting] config
