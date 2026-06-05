@@ -199,9 +199,12 @@ date/reading-time/tags meta-row, and the breadcrumb is `~ / <slug>` instead of
 |-----|---------|-------------|
 | `og_image` | – | Path under `static/` (or a full `https` URL) for OpenGraph/Twitter cards when a page sets no `extra.image` |
 | `theme_color` | `#15324d` | `<meta name="theme-color">` (mobile browser chrome) |
+| `og_locale` | – | `<meta property="og:locale">`, e.g. `en_US` |
+| `twitter.site` | – | `@handle` for `<meta name="twitter:site">` (card attribution) |
+| `twitter.creator` | – | `@handle` for `<meta name="twitter:creator">` |
 
-The theme emits `og:*` / `twitter:*` tags, `rel=canonical`, and `<meta name="author">`
-(from the top-level `author`). It ships `static/favicon.svg` + `static/site.webmanifest`;
+The theme emits `og:*` / `twitter:*` tags, `rel=canonical`, `<meta name="author">`
+(from the top-level `author`), and one `article:tag` per tag on posts. It ships `static/favicon.svg` + `static/site.webmanifest`;
 drop your own `favicon.ico` / `apple-touch-icon.png` / PNG set into `static/` and add the
 matching `<link>`s in `templates/partials/favicon.html` for full legacy/PWA coverage.
 
